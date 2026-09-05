@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Institut Lumen — Recherche indépendante sur la longévité en santé. Lettre, bilan personnel et cohorte volontaire.">
+  <title>Institut Lumen · Longévité en santé</title>
+  <style>
+    :root{
+      --ink:#18231f;
+      --muted:#66736d;
+      --paper:#f7f6f1;
+      --white:#fff;
+      --accent:#294f43;
+      --accent-2:#d8b879;
+      --line:#dfe2dc;
+      --soft:#e9eee9;
+      --max:1180px;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:var(--paper);
+      line-height:1.65;
+    }
+    a{color:inherit}
+    .container{width:min(var(--max), calc(100% - 40px));margin:auto}
+    header{
+      position:sticky;top:0;z-index:20;
+      background:rgba(247,246,241,.94);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:25px
+    }
+    .brand{
+      text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;letter-spacing:.02em;
+      font-weight:700;
+    }
+    .nav-links{display:flex;gap:26px;align-items:center}
+    .nav-links a{text-decoration:none;font-size:.94rem}
+    .nav-links a:hover{text-decoration:underline}
+    .menu{display:none;background:none;border:0;font-size:1.5rem}
+    .hero{
+      min-height:720px;display:grid;place-items:center;
+      background:
+        radial-gradient(circle at 80% 25%, rgba(216,184,121,.24), transparent 25%),
+        linear-gradient(135deg,#f7f6f1 0%,#edf0e9 100%);
+      border-bottom:1px solid var(--line);
+    }
+    .hero-inner{max-width:900px;text-align:center;padding:100px 0}
+    .eyebrow{
+      text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:700;color:var(--accent)
+    }
+    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.12}
+    h1{font-size:clamp(3.1rem,8vw,6.8rem);font-weight:400;margin:25px 0}
+    h1 em{font-weight:700}
+    .hero p{font-size:1.25rem;color:var(--muted);max-width:700px;margin:0 auto 38px}
+    .buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .btn{
+      display:inline-block;text-decoration:none;padding:13px 22px;border-radius:999px;
+      border:1px solid var(--accent);font-weight:700;transition:.2s;
+    }
+    .btn.primary{background:var(--accent);color:white}
+    .btn.secondary{background:transparent;color:var(--accent)}
+    .btn:hover{transform:translateY(-2px)}
+    section{padding:105px 0;scroll-margin-top:76px}
+    .section-head{max-width:760px;margin-bottom:55px}
+    .section-head h2{font-size:clamp(2.3rem,5vw,4rem);font-weight:400;margin:12px 0 18px}
+    .section-head p{color:var(--muted);font-size:1.08rem}
+    .reason{background:var(--white)}
+    .reasons{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .reason-card{
+      border-top:2px solid var(--accent);padding:28px 4px 0
+    }
+    .number{font-size:.78rem;letter-spacing:.15em;color:var(--accent);font-weight:800}
+    .reason-card h3{font-size:1.65rem;font-weight:400;margin:15px 0}
+    .reason-card p{color:var(--muted)}
+    .services{background:var(--paper)}
+    .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .card{
+      background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+      padding:35px;display:flex;flex-direction:column;min-height:390px
+    }
+    .card .tag{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800}
+    .card h3{font-size:2rem;font-weight:400;margin:12px 0}
+    .card p{color:var(--muted);margin-bottom:25px}
+    .card .btn{margin-top:auto;align-self:flex-start}
+    .manifesto{background:var(--accent);color:white}
+    .manifesto .section-head p{color:#d7e0db}
+    .manifesto-box{
+      max-width:850px;border-left:1px solid rgba(255,255,255,.45);padding-left:35px
+    }
+    .manifesto-box p{font-family:Georgia,serif;font-size:1.55rem;line-height:1.45}
+    .study{background:var(--white)}
+    .study-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
+    .study-copy h2{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:400;margin:0 0 25px}
+    .study-copy p{color:var(--muted);font-size:1.08rem}
+    .study-note{background:var(--soft);border-radius:var(--radius);padding:35px}
+    .study-note strong{display:block;font-family:Georgia,serif;font-size:1.45rem;margin-bottom:12px}
+    .partners{text-align:center;background:var(--paper);padding:70px 0}
+    .partners p{font-size:.78rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);font-weight:700}
+    .partner-list{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;color:var(--accent);font-weight:700}
+    .contact{background:var(--white)}
+    footer{background:#17221e;color:#d8e0dc;padding:55px 0}
+    .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:45px}
+    footer h3{color:white;font-size:1.3rem;font-weight:400}
+    footer a{display:block;text-decoration:none;margin:8px 0;color:#d8e0dc}
+    footer a:hover{text-decoration:underline}
+    .copyright{border-top:1px solid rgba(255,255,255,.15);margin-top:35px;padding-top:25px;font-size:.85rem;color:#aebbb5}
+    .placeholder{
+      padding:45px;border:1px dashed #b9c3bc;border-radius:var(--radius);
+      color:var(--muted);background:#fafbf8;
+    }
+    @media(max-width:850px){
+      .nav-links{display:none}
+      .menu{display:block}
+      .reasons,.service-grid,.study-grid,.footer-grid{grid-template-columns:1fr}
+      section{padding:75px 0}
+      .hero{min-height:650px}
+      .partner-list{flex-direction:column;gap:12px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a class="brand" href="#accueil">Institut Lumen</a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#lettre">La Lettre</a>
+      <a href="#bilan">Le Bilan</a>
+      <a href="#etude">L'Étude</a>
+      <a href="#manifeste">Le Manifeste</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="menu" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="accueil">
+    <div class="container hero-inner">
+      <div class="eyebrow">Longévité en santé · recherche indépendante</div>
+      <h1>Être pleinement fonctionnel(le),<br><em>toute sa vie.</em></h1>
+      <p>Une recherche indépendante pour faire progresser la longévité en santé.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#lettre">Découvrir la lettre</a>
+        <a class="btn secondary" href="#bilan">Faire un bilan</a>
+        <a class="btn secondary" href="#etude">Participer à l'étude</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="reason" id="manifeste">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Notre raison d'être</div>
+        <h2>Repenser ce que signifie vieillir en bonne santé.</h2>
+        <p>La longévité ne se résume pas au nombre d'années vécues. L'enjeu est de préserver aussi longtemps que possible l'autonomie physique, les capacités cognitives et le bien-être psychologique.</p>
+      </div>
+      <div class="reasons">
+        <article class="reason-card">
+          <div class="number">01</div>
+          <h3>Vivre 100 ans, cela fait rêver...</h3>
+          <p>Mais vivre 100 ans avec un mal de dos quotidien à partir de 50 ans, en perdant la mémoire à partir de 60 ans et en étant déprimé à chaque réveil à partir de 70 ans, cela est tout de suite moins intéressant, n'est-ce pas ?</p>
+        </article>
+        <article class="reason-card">
+          <div class="number">02</div>
+          <h3>La vieillesse dysfonctionnelle n'est pas une fatalité.</h3>
+          <p>Il est possible d'être autonome physiquement, alerte cognitivement et heureux de vivre jusqu'à ses derniers jours. Deux conditions sont essentielles : renforcer les trois piliers de la longévité en santé et installer les bonnes habitudes le plus tôt possible.</p>
+        </article>
+        <article class="reason-card">
+          <div class="number">03</div>
+          <h3>Prendre son futur en main, dès aujourd'hui.</h3>
+          <p>Trois services sont immédiatement accessibles : une surveillance de l'actualité de la longévité en santé, un bilan de votre structure d'habitudes et une étude annuelle de l'impact des bonnes habitudes.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="lettre">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">La Lettre · mensuelle</div>
+        <h2>Recevez la recherche, une fois par mois.</h2>
+        <p>Chaque 1er du mois, nous faisons le point sur l'actualité de la longévité en santé. La plus grande partie de la lettre est consacrée aux études scientifiques les plus intéressantes.</p>
+      </div>
+      <div class="service-grid">
+        <article class="card">
+          <div class="tag">Abonnement mensuel · gratuit</div>
+          <h3>La Lettre</h3>
+          <p>Une sélection indépendante des recherches, résultats et publications qui méritent votre attention.</p>
+          <a class="btn primary" href="mailto:contact@institut-lumen.fr?subject=Inscription%20à%20la%20Lettre">S'abonner</a>
+        </article>
+
+        <article class="card" id="bilan">
+          <div class="tag">10 minutes</div>
+          <h3>Le Bilan</h3>
+          <p>Votre style de vie et vos habitudes vous offrent-elles toutes les chances de vieillir en bonne santé et en toute autonomie ? Évaluez votre équilibre entre habitudes cognitives, psychologiques et physiques.</p>
+          <a class="btn primary" href="#bilan-quiz">Faire un bilan</a>
+        </article>
+
+        <article class="card" id="etude">
+          <div class="tag">Cohorte volontaire</div>
+          <h3>L'Étude</h3>
+          <p>Après votre bilan, choisissez des habitudes adaptées à votre personnalité et démarrez une nouvelle routine en participant à l'étude.</p>
+          <a class="btn primary" href="#enrolement-etude">Participer à l'étude</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" style="color:#d8b879">Le Manifeste</div>
+        <h2>Une approche centrée sur la fonctionnalité.</h2>
+      </div>
+      <div class="manifesto-box">
+        <p>Vieillir en bonne santé, ce n'est pas seulement ajouter des années à la vie. C'est préserver la capacité à vivre pleinement, à penser clairement, à bouger librement et à rester acteur de son quotidien.</p>
+        <p>Notre démarche cherche à relier les connaissances scientifiques aux habitudes concrètes de la vie quotidienne, avec une approche indépendante, progressive et adaptée à chaque personne.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="study">
+    <div class="container study-grid">
+      <div class="study-copy">
+        <div class="eyebrow">Participer à l'étude</div>
+        <h2>Faisons équipe.</h2>
+        <p>Une fois votre bilan de structure d'habitudes réalisé, vous pouvez demander à recevoir un catalogue d'habitudes. Choisissez celles qui correspondent le mieux à votre personnalité et démarrez une nouvelle routine en participant à l'étude.</p>
+        <p>Vous recevez chaque mois pendant un an un questionnaire pour savoir à quel point vos nouvelles habitudes vous sont bénéfiques. Les résultats de l'étude seront à la fois utiles pour vous et pour toute la communauté.</p>
+        <a class="btn primary" href="#enrolement-etude">Participer à l'étude</a>
+      </div>
+      <aside class="study-note" id="enrolement-etude">
+        <strong>Étude annuelle d'impact</strong>
+        <p>Cette page constitue la présentation publique du projet. Le formulaire d'enrôlement peut être connecté ultérieurement à votre outil de collecte de données.</p>
+        <p><strong>Important :</strong> avant de collecter des données personnelles ou de santé, ajoutez les informations légales, le consentement et le dispositif de protection des données adaptés à votre protocole.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="services" id="bilan-quiz">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Le Bilan</div>
+        <h2>Votre structure d'habitudes</h2>
+        <p>Le questionnaire de bilan peut être intégré ici lorsque vous aurez défini les questions, le système de score et la restitution des résultats.</p>
+      </div>
+      <div class="placeholder">
+        <strong>Zone réservée au questionnaire.</strong><br>
+        Cette version du site contient la structure et le design. Le quiz peut ensuite être ajouté sans modifier l'ensemble du site.
+      </div>
+    </div>
+  </section>
+
+  <section class="partners">
+    <div class="container">
+      <p>Une plateforme soutenue par</p>
+      <div class="partner-list">
+        <span>La ville de La Teste-de-Buch</span>
+        <span>IEP de Bordeaux</span>
+        <span>AVENIR MUTUELLE</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Contact & accréditations</div>
+        <h2>Institut Lumen</h2>
+        <p>Recherche indépendante sur la longévité en santé.</p>
+      </div>
+      <a class="btn primary" href="mailto:contact@institut-lumen.fr">contact@institut-lumen.fr</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>Institut Lumen</h3>
+        <p>Recherche indépendante sur la longévité en santé. Lettre, bilan personnel et cohorte volontaire.</p>
+      </div>
+      <div>
+        <h3>Explorer</h3>
+        <a href="#lettre">La Lettre</a>
+        <a href="#bilan">Le Bilan</a>
+        <a href="#etude">L'Étude</a>
+        <a href="#manifeste">Le Manifeste</a>
+      </div>
+      <div>
+        <h3>Informations</h3>
+        <a href="#contact">Contact</a>
+        <a href="#charte">Charte éthique</a>
+        <a href="#mentions">Mentions légales</a>
+        <a href="#confidentialite">Politique de confidentialité</a>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 Institut Lumen · Recherche sur la longévité en santé · Comité d'éthique n°2026-014 · CNIL conforme
+    </div>
+  </div>
+</footer>
+
+<!-- Sections temporaires : à remplacer par vos textes juridiques définitifs -->
+<div id="charte"></div>
+<div id="mentions"></div>
+<div id="confidentialite"></div>
+
+</body>
+</html>
