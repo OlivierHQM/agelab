@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habits Structure Audit</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F6F2ED;
+  --dark: #1A1A1A;
+  --A: #4A7FA5; --A-pale: rgba(74,127,165,0.09);
+  --B: #7A5FA5; --B-pale: rgba(122,95,165,0.09);
+  --C: #D4955A; --C-pale: rgba(212,149,90,0.09);
+  --D: #5A8F6A; --D-pale: rgba(90,143,106,0.09);
+  --E: #A05070; --E-pale: rgba(160,80,112,0.09);
+  --F: #3A8FA0; --F-pale: rgba(58,143,160,0.09);
+  --G: #8A7040; --G-pale: rgba(138,112,64,0.09);
+  --harmful: #B85450; --harmful-pale: rgba(184,84,80,0.09);
+  --green: #5A8F6A; --amber: #C4874A; --red: #B85450;
+  --border: #E8E2DA; --muted: #888;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--dark); min-height:100vh; }
+body::before { content:''; position:fixed; top:-20%; right:-15%; width:500px; height:500px; background:radial-gradient(circle,rgba(74,127,165,.10) 0%,transparent 70%); pointer-events:none; z-index:0; }
+.container { max-width:740px; margin:0 auto; padding:40px 20px 80px; position:relative; z-index:1; }
+
+/* WELCOME */
+.welcome { text-align:center; padding:60px 20px; animation:fadeUp .7s ease both; }
+.eyebrow { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--A); font-weight:600; margin-bottom:20px; }
+.welcome h1 { font-family:'Playfair Display',serif; font-size:clamp(34px,7vw,54px); line-height:1.1; margin-bottom:8px; }
+.welcome h1 em { font-style:italic; color:var(--A); }
+.welcome-sub { font-family:'Playfair Display',serif; font-size:18px; color:var(--muted); font-style:italic; margin-bottom:24px; }
+.divider { width:40px; height:2px; background:var(--A); margin:0 auto 24px; }
+.welcome p { font-size:16px; color:#666; line-height:1.7; max-width:500px; margin:0 auto 32px; font-weight:300; }
+
+.sections-overview { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; margin-bottom:36px; text-align:left; }
+.section-pill { padding:12px 16px; border-radius:12px; border:1.5px solid var(--border); background:white; }
+.section-pill-letter { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+.section-pill-name { font-size:13px; color:#555; font-weight:400; }
+
+.start-btn { display:inline-flex; align-items:center; gap:10px; padding:18px 48px; background:var(--dark); color:white; border:none; border-radius:14px; font-size:16px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all .25s; }
+.start-btn:hover { background:#333; transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,.18); }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom:32px; }
+.progress-meta { display:flex; justify-content:space-between; margin-bottom:8px; }
+.progress-label { font-size:13px; color:var(--muted); font-weight:500; }
+.progress-pct { font-size:13px; font-weight:600; }
+.progress-track { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:3px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%; }
+
+/* SECTION HEADER */
+.section-header { color:white; border-radius:18px; padding:28px 32px; margin-bottom:16px; position:relative; overflow:hidden; }
+.section-header::before { content:''; position:absolute; top:-40%; right:-10%; width:250px; height:250px; background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 70%); }
+.sh-eyebrow { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:6px; font-weight:500; }
+.section-header h2 { font-family:'Playfair Display',serif; font-size:24px; margin-bottom:6px; }
+.section-header p { font-size:13px; color:rgba(255,255,255,.5); line-height:1.5; font-weight:300; }
+
+/* QUESTION CARD */
+.question-card { background:white; border-radius:16px; padding:28px; margin-bottom:12px; border:1.5px solid var(--border); transition:box-shadow .2s; animation:fadeUp .4s ease both; }
+.question-card:hover { box-shadow:0 4px 18px rgba(0,0,0,.06); }
+.question-card.answered { border-color:rgba(90,143,106,.35); }
+.q-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:18px; }
+.q-num { width:26px; height:26px; border-radius:7px; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+.q-text { font-family:'Playfair Display',serif; font-size:17px; line-height:1.4; flex:1; }
+.harmful-tag { display:inline-flex; align-items:center; gap:4px; font-size:10px; letter-spacing:.8px; text-transform:uppercase; color:var(--harmful); background:var(--harmful-pale); padding:2px 8px; border-radius:100px; font-weight:600; margin-left:8px; vertical-align:middle; font-family:'DM Sans',sans-serif; }
+
+/* OPTIONS */
+.options-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+@media(max-width:480px){ .options-grid { grid-template-columns:1fr; } }
+.option-btn { display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:10px; border:1.5px solid var(--border); background:white; cursor:pointer; transition:all .18s; text-align:left; font-family:'DM Sans',sans-serif; width:100%; }
+.option-btn:hover { transform:translateY(-1px); }
+.option-btn.selected { border-color:var(--green); background:var(--D-pale); }
+.option-radio { width:17px; height:17px; border-radius:50%; border:2px solid #DDD; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .18s; }
+.option-btn.selected .option-radio { border-color:var(--green); background:var(--green); }
+.option-btn.selected .option-radio::after { content:''; width:5px; height:5px; border-radius:50%; background:white; }
+.option-label { font-size:14px; color:#555; flex:1; }
+.option-btn.selected .option-label { color:var(--dark); font-weight:500; }
+.option-score-tag { font-size:11px; color:#CCC; font-weight:700; }
+.option-btn.selected .option-score-tag { color:var(--green); }
+
+/* SECTION DIVIDER */
+.section-break { display:flex; align-items:center; gap:16px; margin:32px 0 20px; }
+.section-break-line { flex:1; height:1px; background:var(--border); }
+.section-break-text { font-size:12px; color:var(--muted); font-weight:500; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+
+/* SUBMIT */
+.submit-area { text-align:center; margin-top:32px; padding:32px; background:white; border-radius:18px; border:1.5px dashed var(--border); }
+.submit-area p { font-size:14px; color:var(--muted); margin-bottom:20px; }
+.answered-count { font-weight:700; }
+.submit-btn { display:inline-flex; align-items:center; gap:10px; padding:18px 56px; background:var(--dark); color:white; border:none; border-radius:14px; font-size:16px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all .25s; }
+.submit-btn:disabled { background:#CCC; cursor:not-allowed; }
+.submit-btn:not(:disabled):hover { background:#333; transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,.18); }
+
+/* RESULTS */
+.results { animation:fadeUp .7s ease both; }
+.results-hero { background:var(--dark); color:white; border-radius:24px; padding:52px 40px; text-align:center; margin-bottom:24px; position:relative; overflow:hidden; }
+.results-hero::before { content:''; position:absolute; top:-30%; left:50%; transform:translateX(-50%); width:400px; height:400px; background:radial-gradient(circle,rgba(74,127,165,.2) 0%,transparent 70%); pointer-events:none; }
+.results-eyebrow { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:16px; font-weight:500; }
+.results-hero h2 { font-family:'Playfair Display',serif; font-size:clamp(26px,5vw,38px); margin-bottom:28px; }
+.score-big { font-family:'Playfair Display',serif; font-size:86px; font-weight:700; line-height:1; }
+.score-denom { font-size:26px; color:rgba(255,255,255,.35); }
+.score-pct-txt { font-size:18px; color:rgba(255,255,255,.55); margin:8px 0 20px; }
+.verdict-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 28px; border-radius:100px; font-size:15px; font-weight:600; margin-bottom:14px; }
+.verdict-badge.green { background:rgba(90,143,106,.35); color:#9FDCAF; }
+.verdict-badge.amber { background:rgba(196,135,74,.35); color:#FFD4A0; }
+.verdict-badge.red   { background:rgba(184,84,80,.35);  color:#FFB0AD; }
+.verdict-text { font-size:14px; color:rgba(255,255,255,.45); font-style:italic; max-width:440px; margin:0 auto; line-height:1.6; }
+
+/* SECTION SCORE CARDS */
+.section-scores { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:20px; }
+.sec-card { background:white; border-radius:14px; padding:22px; border:1.5px solid var(--border); }
+.sec-card-letter { font-size:11px; letter-spacing:1px; text-transform:uppercase; font-weight:700; margin-bottom:4px; }
+.sec-card-name { font-size:13px; color:var(--muted); margin-bottom:12px; font-weight:400; }
+.sec-score-num { font-family:'Playfair Display',serif; font-size:32px; font-weight:700; line-height:1; margin-bottom:3px; }
+.sec-score-pct { font-size:12px; color:var(--muted); margin-bottom:10px; }
+.sec-bar { height:5px; background:#EEE; border-radius:3px; overflow:hidden; }
+.sec-bar-fill { height:100%; border-radius:3px; transition:width 1s cubic-bezier(.4,0,.2,1) .3s; }
+
+/* BREAKDOWN */
+.breakdown { background:white; border-radius:18px; padding:32px; margin-bottom:16px; border:1.5px solid var(--border); }
+.breakdown h3 { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:22px; }
+.breakdown-section-label { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; padding:8px 0 12px; margin-top:8px; border-bottom:1px solid var(--border); margin-bottom:4px; }
+.bd-item { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid #F5F0EA; }
+.bd-item:last-child { border-bottom:none; }
+.bd-num { width:22px; font-size:12px; color:var(--muted); font-weight:600; flex-shrink:0; text-align:center; }
+.bd-q { flex:1; font-size:13px; color:#555; line-height:1.4; }
+.bd-ans { font-size:12px; font-weight:500; color:#444; white-space:nowrap; padding:0 6px; }
+.chip { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.chip-4 { background:rgba(90,143,106,.15); color:var(--green); }
+.chip-3 { background:rgba(74,127,165,.15); color:var(--A); }
+.chip-2 { background:rgba(196,135,74,.15); color:var(--amber); }
+.chip-1 { background:rgba(184,84,80,.15); color:var(--red); }
+
+/* RECOMMENDATIONS */
+.recs { background:white; border-radius:18px; padding:32px; margin-bottom:20px; border:1.5px solid var(--border); }
+.recs h3 { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:22px; }
+.rec-item { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid #F5F0EA; }
+.rec-item:last-child { border-bottom:none; padding-bottom:0; }
+.rec-icon { font-size:22px; flex-shrink:0; width:34px; text-align:center; }
+.rec-body h4 { font-size:15px; font-weight:600; margin-bottom:4px; }
+.rec-body p { font-size:13px; color:#777; line-height:1.55; font-weight:300; }
+
+.restart-btn { display:block; width:100%; padding:18px; background:var(--A); color:white; border:none; border-radius:14px; font-size:16px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all .25s; }
+.restart-btn:hover { background:#3A6F95; transform:translateY(-2px); box-shadow:0 8px 24px rgba(74,127,165,.3); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+.hidden { display:none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- WELCOME -->
+<div id="welcomeScreen" class="welcome">
+  <div class="eyebrow">Healthy Longevity Assessment</div>
+  <h1>Habits Structure<br><em>Audit</em></h1>
+  <div class="welcome-sub">Complete Edition — 7 Sections</div>
+  <div class="divider"></div>
+  <p>A comprehensive assessment of your physical, psychological and cognitive habits. Answer honestly — there are no right or wrong answers, only your truth.</p>
+  <div class="sections-overview">
+    <div class="section-pill"><div class="section-pill-letter" style="color:var(--A)">A — Physical</div><div class="section-pill-name">Strengthening Inputs · 13 Q</div></div>
+    <div class="section-pill"><div class="section-pill-letter" style="color:var(--B)">B — Psychological</div><div class="section-pill-name">Strengthening Inputs · 13 Q</div></div>
+    <div class="section-pill"><div class="section-pill-letter" style="color:var(--C)">C — Cognitive</div><div class="section-pill-name">Strengthening Inputs · 16 Q</div></div>
+    <div class="section-pill"><div class="section-pill-letter" style="color:var(--D)">D — Mindful</div><div class="section-pill-name">Processing · 2 Q</div></div>
+    <div class="section-pill"><div class="section-pill-letter" style="color:var(--E)">E — Balanced</div><div class="section-pill-name">Processing · 2 Q</div></div>
+    <div class="section-pill"><div class="section-pill-letter" style="color:var(--F)">F — Habits</div><div class="section-pill-name">Processing · 2 Q</div></div>
+    <div class="section-pill"><div class="section-pill-letter" style="color:var(--G)">G — Time</div><div class="section-pill-name">Management · 3 Q</div></div>
+  </div>
+  <button class="start-btn" onclick="startAudit()">Begin your audit →</button>
+</div>
+
+<!-- AUDIT -->
+<div id="auditScreen" class="hidden">
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span class="progress-label">Habits Structure Audit · 51 Questions</span>
+      <span class="progress-pct" id="progressPct" style="color:var(--A)">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="background:linear-gradient(90deg,var(--A),var(--B))"></div></div>
+  </div>
+  <div id="questionsContainer"></div>
+  <div class="submit-area">
+    <p><span class="answered-count" id="answeredCount" style="color:var(--A)">0</span> of 51 questions answered</p>
+    <button class="submit-btn" id="submitBtn" onclick="showResults()" disabled>See my results →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="resultsScreen" class="hidden results"></div>
+
+</div>
+<script>
+const FREQ_OPTS = [
+  {label:'Never',               score:1},
+  {label:'A few times a month', score:2},
+  {label:'A few times a week',  score:3},
+  {label:'Every day',           score:4},
+];
+const YNK_OPTS = [
+  {label:'Yes',        score:3},
+  {label:"I don't know", score:2},
+  {label:'No',         score:1},
+];
+
+const SECTIONS = [
+  {
+    id:'A', color:'var(--A)', name:'Physical Strengthening Inputs', type:'freq',
+    note:'Questions 9–13 are about harmful habits — scoring is reversed (Never = best).',
+    questions:[
+      {text:'Do you engage in light physical activity?',           harmful:false},
+      {text:'Do you practise a cardio activity?',                  harmful:false},
+      {text:'Do you practise a strength activity?',                harmful:false},
+      {text:'Do you practise a mobility activity?',                harmful:false},
+      {text:'Do you practise a balance activity?',                 harmful:false},
+      {text:'Do you practise a proprioception activity?',          harmful:false},
+      {text:'Do you practise stretching exercises?',               harmful:false},
+      {text:'Do you practise breathing exercises?',                harmful:false},
+      {text:'Do you drink alcohol?',                               harmful:true},
+      {text:'Do you consume tobacco?',                             harmful:true},
+      {text:'Do you consume drugs?',                               harmful:true},
+      {text:'Do you consume sugar?',                               harmful:true},
+      {text:'Do you consume processed food?',                      harmful:true},
+    ]
+  },
+  {
+    id:'B', color:'var(--B)', name:'Psychological Strengthening Inputs', type:'freq',
+    note:'Question 13 is about a potentially harmful habit — scoring is reversed.',
+    questions:[
+      {text:'Do you read books, listen to programmes, or study materials about self-esteem?',              harmful:false},
+      {text:'Do you practise self-esteem strengthening exercises?',                                        harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about inner peace?',              harmful:false},
+      {text:'Do you practise inner peace strengthening exercises?',                                        harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about meditation?',               harmful:false},
+      {text:'Do you practise meditation exercises?',                                                       harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about empowerment?',              harmful:false},
+      {text:'Do you track your empowerment capacity?',                                                     harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about focusing?',                 harmful:false},
+      {text:'Do you practise focusing strengthening exercises?',                                           harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about human connection?',         harmful:false},
+      {text:'Do you track your human connection capacity?',                                                harmful:false},
+      {text:'Do you spend time on social media?',                                                         harmful:true},
+    ]
+  },
+  {
+    id:'C', color:'var(--C)', name:'Cognitive Strengthening Inputs', type:'freq',
+    note:'All questions have the same scoring: the more you engage, the better.',
+    questions:[
+      {text:'Do you read books, listen to programmes, or study materials about memory?',                              harmful:false},
+      {text:'Do you practise memory strengthening exercises?',                                                        harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about solving problems?',                    harmful:false},
+      {text:'Do you practise problem-solving exercises? (crosswords, chess, mathematics, etc.)',                      harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about learning skills?',                     harmful:false},
+      {text:'Do you learn something new?',                                                                            harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about the importance of new experiences?',   harmful:false},
+      {text:'Do you experience something new? (travel, sport, cooking, life events, etc.)',                           harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about the art of processing?',               harmful:false},
+      {text:'Do you track your processing capacity?',                                                                 harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about creativity?',                          harmful:false},
+      {text:'Do you practise a creative activity?',                                                                   harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about the reading habit?',                   harmful:false},
+      {text:'Do you read?',                                                                                           harmful:false},
+      {text:'Do you read books, listen to programmes, or study materials about the art of speaking?',                 harmful:false},
+      {text:'Do you practise speaking strengthening exercises?',                                                      harmful:false},
+    ]
+  },
+  {
+    id:'D', color:'var(--D)', name:'Mindful Processing', type:'ynk',
+    note:'Answer honestly — these questions explore your self-awareness.',
+    questions:[
+      {text:'Do you think that your motivation affects the quality of your actions?',   harmful:false},
+      {text:'Do you think that your level of energy affects the quality of your actions?', harmful:false},
+    ]
+  },
+  {
+    id:'E', color:'var(--E)', name:'Balanced Processing', type:'ynk',
+    note:'These questions explore how balanced your approach to healthy ageing is.',
+    questions:[
+      {text:'Do you think that physical, psychological and cognitive functions have the same importance for ageing well?', harmful:false},
+      {text:'Do you think that your habits are balanced between these three functions?',                                   harmful:false},
+    ]
+  },
+  {
+    id:'F', color:'var(--F)', name:'Habits Processing', type:'ynk',
+    note:'These questions explore your awareness of your own habit structure.',
+    questions:[
+      {text:'Do you read books, listen to programmes, or study materials about habits?', harmful:false},
+      {text:'Do you track your habits?',                                                 harmful:false},
+    ]
+  },
+  {
+    id:'G', color:'var(--G)', name:'Time Management', type:'ynk',
+    note:'These questions explore your relationship with time and scheduling.',
+    questions:[
+      {text:'Do you read books, listen to programmes, or study materials about time management?',                              harmful:false},
+      {text:'Do you think you have enough time to do physical, psychological and cognitive exercises regularly?',               harmful:false},
+      {text:'Have you ever tried to improve your time management?',                                                            harmful:false},
+    ]
+  },
+];
+
+// Build flat question list with global index
+let allQuestions = [];
+SECTIONS.forEach(sec => {
+  sec.questions.forEach((q,qi) => {
+    allQuestions.push({...q, sectionId:sec.id, sectionName:sec.name, sectionColor:sec.color, type:sec.type, localIndex:qi, globalId: sec.id + '_' + qi});
+  });
+});
+
+const TOTAL = allQuestions.length; // 51
+let answers = {};
+
+function getScore(baseScore, harmful, type) {
+  if (type === 'ynk') return baseScore;
+  return harmful ? (5 - baseScore) : baseScore;
+}
+
+function getMaxScore(type) { return type === 'ynk' ? 3 : 4; }
+
+function startAudit() {
+  document.getElementById('welcomeScreen').classList.add('hidden');
+  document.getElementById('auditScreen').classList.remove('hidden');
+  buildAllQuestions();
+}
+
+function buildAllQuestions() {
+  const container = document.getElementById('questionsContainer');
+  let html = '';
+  let globalIdx = 0;
+
+  SECTIONS.forEach(sec => {
+    const opts = sec.type === 'freq' ? FREQ_OPTS : YNK_OPTS;
+    html += `
+      <div class="section-header" style="background:${sec.color}">
+        <div class="sh-eyebrow">Section ${sec.id} · ${sec.questions.length} Questions</div>
+        <h2>${sec.name}</h2>
+        <p>${sec.note}</p>
+      </div>
+    `;
+
+    sec.questions.forEach((q, qi) => {
+      const gid = sec.id + '_' + qi;
+      const isHarmful = q.harmful;
+      html += `
+        <div class="question-card" id="card-${gid}" style="animation-delay:${(globalIdx%10)*0.03}s">
+          <div class="q-header">
+            <div class="q-num" style="background:${sec.color}22;color:${sec.color}">${qi+1}</div>
+            <div class="q-text">${q.text}${isHarmful ? '<span class="harmful-tag">⚠️ harmful</span>':''}</div>
+          </div>
+          <div class="options-grid">
+            ${opts.map(opt => {
+              const score = getScore(opt.score, isHarmful, sec.type);
+              return `<button class="option-btn" onclick="selectAnswer('${gid}',${opt.score},${isHarmful},'${sec.type}',this)" style="--hover-color:${sec.color}22;--sel-border:${sec.color}">
+                <div class="option-radio"></div>
+                <span class="option-label">${opt.label}</span>
+                <span class="option-score-tag">${score}pt</span>
+              </button>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      globalIdx++;
+    });
+
+    html += `<div class="section-break"><div class="section-break-line"></div><div class="section-break-text" style="color:${sec.color}">End of Section ${sec.id}</div><div class="section-break-line"></div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function selectAnswer(gid, baseScore, harmful, type, btn) {
+  const card = document.getElementById('card-'+gid);
+  card.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const score = getScore(baseScore, harmful, type);
+  answers[gid] = {baseScore, score, harmful, type};
+  card.classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  const pct = Math.round((count/TOTAL)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.getElementById('answeredCount').textContent = count;
+  document.getElementById('submitBtn').disabled = count < TOTAL;
+}
+
+function getSectionScore(secId) {
+  const sec = SECTIONS.find(s=>s.id===secId);
+  let total=0, max=0;
+  sec.questions.forEach((_,qi)=>{
+    const gid = secId+'_'+qi;
+    if(answers[gid]) total += answers[gid].score;
+    max += getMaxScore(sec.type);
+  });
+  return {total, max, pct: Math.round((total/max)*100)};
+}
+
+function getOverallScore() {
+  let total=0, max=0;
+  SECTIONS.forEach(sec => {
+    const s = getSectionScore(sec.id);
+    total+=s.total; max+=s.max;
+  });
+  return {total, max, pct: Math.round((total/max)*100)};
+}
+
+function showResults() {
+  document.getElementById('auditScreen').classList.add('hidden');
+  const rs = document.getElementById('resultsScreen');
+  rs.classList.remove('hidden');
+
+  const overall = getOverallScore();
+  const {total, max, pct} = overall;
+
+  let vClass, vEmoji, vTitle, vText;
+  if(pct>=75){ vClass='green'; vEmoji='🟢'; vTitle='Strong Habits Structure'; vText='Your habits are well developed across all dimensions. Focus on sustaining and deepening your routines for long term healthy ageing.'; }
+  else if(pct>=50){ vClass='amber'; vEmoji='🟡'; vTitle='Developing Habits Structure'; vText='You have solid foundations. Targeted work in your weaker sections will significantly accelerate your progress towards healthy ageing.'; }
+  else { vClass='red'; vEmoji='🔴'; vTitle='Habits Structure Needs Attention'; vText='This is a valuable starting point. Awareness is the first step. Even small consistent changes compound dramatically over time.'; }
+
+  const sectionScores = SECTIONS.map(sec => {
+    const s = getSectionScore(sec.id);
+    return {...sec, ...s};
+  });
+
+  const freqLabels = ['Never','A few times a month','A few times a week','Every day'];
+  const ynkLabels  = ['No',"I don't know",'Yes'];
+
+  // Build breakdown HTML
+  let breakdownHtml = '';
+  SECTIONS.forEach(sec => {
+    const opts = sec.type==='freq' ? freqLabels : ynkLabels;
+    breakdownHtml += `<div class="breakdown-section-label" style="color:${sec.color}">Section ${sec.id} — ${sec.name}</div>`;
+    sec.questions.forEach((q,qi) => {
+      const gid = sec.id+'_'+qi;
+      const a = answers[gid];
+      const labelArr = sec.type==='freq' ? freqLabels : ynkLabels;
+      const label = labelArr[a.baseScore-1];
+      breakdownHtml += `
+        <div class="bd-item">
+          <div class="bd-num">${qi+1}</div>
+          <div class="bd-q">${q.text}</div>
+          <div class="bd-ans">${label}</div>
+          <div class="chip chip-${a.score}">${a.score}</div>
+        </div>
+      `;
+    });
+  });
+
+  const recs = buildRecs(sectionScores);
+
+  rs.innerHTML = `
+    <div class="results-hero">
+      <div class="results-eyebrow">Habits Structure Audit · Complete Results</div>
+      <h2>Your Habits<br><em style="font-style:italic;color:rgba(255,255,255,.45)">Structure Report</em></h2>
+      <div>
+        <div class="score-big">${total}<span class="score-denom"> / ${max}</span></div>
+        <div class="score-pct-txt">${pct}% of maximum score</div>
+      </div>
+      <div class="verdict-badge ${vClass}">${vEmoji} ${vTitle}</div>
+      <p class="verdict-text">${vText}</p>
+    </div>
+
+    <div class="section-scores">
+      ${sectionScores.map(s=>`
+        <div class="sec-card">
+          <div class="sec-card-letter" style="color:${s.color}">Section ${s.id}</div>
+          <div class="sec-card-name">${s.name}</div>
+          <div class="sec-score-num" style="color:${s.color}">${s.total}</div>
+          <div class="sec-score-pct">${s.pct}% · ${s.total}/${s.max} pts</div>
+          <div class="sec-bar"><div class="sec-bar-fill" style="width:${s.pct}%;background:${s.color}"></div></div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="recs">
+      <h3>Personalised Recommendations</h3>
+      ${recs.map(r=>`
+        <div class="rec-item">
+          <div class="rec-icon">${r.icon}</div>
+          <div class="rec-body"><h4>${r.title}</h4><p>${r.text}</p></div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="breakdown">
+      <h3>Full Question-by-Question Breakdown</h3>
+      ${breakdownHtml}
+    </div>
+
+    <button class="restart-btn" onclick="restartAudit()">← Take the audit again</button>
+  `;
+
+  // Animate bars after render
+  setTimeout(()=>{
+    document.querySelectorAll('.sec-bar-fill').forEach(el=>{
+      const w = el.style.width;
+      el.style.width='0';
+      setTimeout(()=>el.style.width=w, 50);
+    });
+  }, 100);
+}
+
+function buildRecs(sectionScores) {
+  const recs = [];
+  const weakest = [...sectionScores].sort((a,b)=>a.pct-b.pct).slice(0,2);
+
+  weakest.forEach(s => {
+    const recMap = {
+      A: { icon:'💪', title:'Strengthen your physical inputs', text:'Your physical habits score suggests room for improvement. Start with one new activity — even a 20-minute daily walk will compound significantly over 30 days.' },
+      B: { icon:'💭', title:'Invest in your psychological resilience', text:'Psychological habits are the hidden engine of healthy ageing. Start with one self-esteem or inner peace resource — a book, a podcast, or a short daily exercise.' },
+      C: { icon:'🧠', title:'Train your cognitive capacity daily', text:'Cognitive stimulation is your brain\'s gym. Even 15 minutes of reading, learning, or creative activity daily makes a measurable difference over time.' },
+      D: { icon:'🌟', title:'Develop your mindful self-awareness', text:'Understanding how motivation and energy affect your actions is a powerful lever. Begin observing your own patterns — awareness precedes change.' },
+      E: { icon:'⚖️', title:'Work towards a more balanced approach', text:'Healthy ageing requires balance across physical, psychological and cognitive dimensions. Identify your weakest pillar and give it focused attention this month.' },
+      F: { icon:'📋', title:'Start tracking your habits', text:'What gets measured gets managed. Even a simple daily checklist transforms vague intentions into concrete accountability.' },
+      G: { icon:'⏰', title:'Prioritise your time management', text:'Time is the most common barrier to healthy ageing habits. Identify one 15-minute daily slot dedicated entirely to your lowest-scoring area.' },
+    };
+    if(recMap[s.id]) recs.push(recMap[s.id]);
+  });
+
+  recs.push({ icon:'🌿', title:'Your next step: begin your introspection', text:'Now that you have a clear picture of your habits structure, the next step is understanding how to build new long term healthy habits. Use these results as your starting point.' });
+
+  return recs;
+}
+
+function restartAudit() {
+  answers = {};
+  document.getElementById('resultsScreen').classList.add('hidden');
+  document.getElementById('resultsScreen').innerHTML='';
+  document.getElementById('welcomeScreen').classList.remove('hidden');
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('progressPct').textContent='0%';
+  document.getElementById('answeredCount').textContent='0';
+}
+</script>
+</body>
+</html>
