@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Lettre — HQM Age Lab</title>
+  <meta name="description" content="Recevez chaque mois une sélection des recherches et de l'actualité sur la longévité en santé.">
+  <style>
+    :root{
+      --ink:#18231f;
+      --muted:#66736d;
+      --paper:#f7f6f1;
+      --white:#ffffff;
+      --accent:#294f43;
+      --accent-2:#d8b879;
+      --line:#dfe2dc;
+      --soft:#e9eee9;
+    }
+
+    *{box-sizing:border-box}
+
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family:Arial, Helvetica, sans-serif;
+      line-height:1.6;
+    }
+
+    a{color:inherit}
+
+    .site-header{
+      max-width:1180px;
+      margin:0 auto;
+      padding:28px 28px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .brand{
+      text-decoration:none;
+      font-size:1.05rem;
+      font-weight:700;
+      letter-spacing:.02em;
+      color:var(--accent);
+    }
+
+    .back{
+      text-decoration:none;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .back:hover{color:var(--accent)}
+
+    main{
+      min-height:calc(100vh - 150px);
+      display:flex;
+      align-items:center;
+      padding:55px 28px 80px;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:70px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      margin:0 0 18px;
+      color:var(--accent);
+      font-size:.78rem;
+      font-weight:700;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    h1{
+      margin:0;
+      max-width:720px;
+      font-family:Georgia, "Times New Roman", serif;
+      font-weight:500;
+      font-size:clamp(2.5rem, 5vw, 4.6rem);
+      line-height:1.05;
+      letter-spacing:-.035em;
+    }
+
+    .intro{
+      max-width:650px;
+      margin:28px 0 0;
+      color:var(--muted);
+      font-size:1.08rem;
+    }
+
+    .highlight{
+      display:inline-flex;
+      margin-top:30px;
+      padding:9px 15px;
+      background:var(--soft);
+      color:var(--accent);
+      border-radius:999px;
+      font-size:.88rem;
+      font-weight:700;
+    }
+
+    .form-card{
+      background:var(--white);
+      border:1px solid var(--line);
+      padding:38px;
+      box-shadow:0 18px 50px rgba(24,35,31,.07);
+    }
+
+    .form-card h2{
+      margin:0 0 8px;
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:1.9rem;
+      font-weight:500;
+    }
+
+    .form-card .sub{
+      margin:0 0 26px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    form{display:grid;gap:17px}
+
+    label{
+      display:block;
+      margin-bottom:7px;
+      font-size:.84rem;
+      font-weight:700;
+      color:var(--ink);
+    }
+
+    input{
+      width:100%;
+      padding:13px 14px;
+      border:1px solid var(--line);
+      border-radius:2px;
+      background:#fff;
+      color:var(--ink);
+      font:inherit;
+      outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+
+    input:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(41,79,67,.1);
+    }
+
+    button{
+      width:100%;
+      margin-top:7px;
+      padding:14px 18px;
+      border:0;
+      border-radius:2px;
+      background:var(--accent);
+      color:#fff;
+      font:inherit;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .15s, opacity .15s;
+    }
+
+    button:hover{
+      opacity:.92;
+      transform:translateY(-1px);
+    }
+
+    .note{
+      margin:17px 0 0;
+      color:var(--muted);
+      font-size:.76rem;
+      line-height:1.5;
+    }
+
+    footer{
+      border-top:1px solid var(--line);
+      max-width:1100px;
+      margin:0 auto;
+      padding:22px 28px 35px;
+      color:var(--muted);
+      font-size:.78rem;
+    }
+
+    @media(max-width:800px){
+      .site-header{padding:22px 20px 10px}
+      main{padding:45px 20px 60px}
+      .grid{
+        grid-template-columns:1fr;
+        gap:45px;
+      }
+      h1{font-size:clamp(2.4rem, 11vw, 4rem)}
+      .form-card{padding:28px 23px}
+      footer{padding-left:20px;padding-right:20px}
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">HQM Age Lab</a>
+    <a class="back" href="index.html">← Retour au site</a>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="grid">
+
+        <section>
+          <p class="eyebrow">HQM Age Lab · La Lettre</p>
+
+          <h1>
+            Recevez chaque mois une sélection des recherches et de l'actualité sur la longévité en santé.
+          </h1>
+
+          <p class="intro">
+            Une veille indépendante pour suivre les avancées scientifiques,
+            les nouvelles études et les évolutions majeures dans le champ
+            de la longévité en santé.
+          </p>
+
+          <div class="highlight">Abonnement mensuel · Gratuit</div>
+        </section>
+
+        <section class="form-card">
+          <h2>S'abonner à la Lettre</h2>
+          <p class="sub">
+            Renseignez vos coordonnées pour recevoir les prochaines éditions.
+          </p>
+
+          <form id="newsletterForm">
+            <div>
+              <label for="nom">Nom</label>
+              <input type="text" id="nom" name="nom" required>
+            </div>
+
+            <div>
+              <label for="prenom">Prénom</label>
+              <input type="text" id="prenom" name="prenom" required>
+            </div>
+
+            <div>
+              <label for="profession">Profession</label>
+              <input type="text" id="profession" name="profession" required>
+            </div>
+
+            <div>
+              <label for="email">Adresse courriel</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <button type="submit">S'abonner</button>
+          </form>
+
+          <p class="note">
+            En cliquant sur « S'abonner », votre logiciel de messagerie
+            s'ouvrira avec un courriel prérempli à destination de
+            <strong>oliv.hqm@gmail.com</strong>.
+          </p>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 HQM Age Lab · Recherche indépendante sur la longévité en santé.
+  </footer>
+
+  <script>
+    document.getElementById("newsletterForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const nom = document.getElementById("nom").value.trim();
+      const prenom = document.getElementById("prenom").value.trim();
+      const profession = document.getElementById("profession").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      const subject = "Nouvelle inscription à la Lettre HQM Age Lab";
+
+      const body =
+`NOUVELLE INSCRIPTION À LA LETTRE HQM AGE LAB
+
+Nom : ${nom}
+Prénom : ${prenom}
+Profession : ${profession}
+Adresse courriel : ${email}`;
+
+      const mailto =
+        "mailto:oliv.hqm@gmail.com" +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+
+      window.location.href = mailto;
+    });
+  </script>
+
+</body>
+</html>
