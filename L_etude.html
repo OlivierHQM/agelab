@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Lettre — HQM Age Lab</title>
-  <meta name="description" content="Recevez chaque mois une sélection des recherches et de l'actualité sur la longévité en santé.">
+  <title>L'Étude — HQM Age Lab</title>
+  <meta name="description" content="Renforcez l’installation de votre nouvelle routine d’habitudes en participant à l’étude Age Lab.">
   <style>
     :root{
       --ink:#18231f;
@@ -221,28 +221,25 @@
       <div class="grid">
 
         <section>
-          <p class="eyebrow">HQM Age Lab · La Lettre</p>
+          <p class="eyebrow">HQM Age Lab · L'Étude</p>
 
           <h1>
-            Recevez chaque mois une sélection des recherches et de l'actualité sur la longévité en santé.
+            Renforcez l’installation de votre nouvelle routine d’habitudes en participant à l’étude Age Lab.
           </h1>
 
           <p class="intro">
-            Une veille indépendante pour suivre les avancées scientifiques,
-            les nouvelles études et les évolutions majeures dans le champ
-            de la longévité en santé.
+            Une fois votre candidature reçue, vous recevrez un catalogue d'habitudes proposé par Age Lab. Choisissez les trois habitudes qui correspondent le mieux à votre personnalité et démarrez une nouvelle routine . Vous recevez, ensuite, chaque mois pendant 1 an un questionnaire pour mesurer les bénéfices sur votre santé de long terme. Grâce à l’étude pour restez motivé, vous mesurez la pertinence de votre choix de nouvelles habitudes et vous contribuer à faire progresser la longévité en santé pour tous. Tous les résultats rendus anonymes peuvent faire l’objet d’une communication externe.
           </p>
 
-          <div class="highlight">Abonnement mensuel · Gratuit</div>
         </section>
 
         <section class="form-card">
-          <h2>S'abonner à la Lettre</h2>
+          <h2>S'inscrire à l'Étude</h2>
           <p class="sub">
-            Renseignez vos coordonnées pour recevoir les prochaines éditions.
+            Renseignez vos coordonnées pour vous recevoir vous inscrire à l'Étude.
           </p>
 
-          <form id="newsletterForm">
+          <form id="L'Étude Form">
             <div>
               <label for="nom">Nom</label>
               <input type="text" id="nom" name="nom" required>
@@ -251,11 +248,6 @@
             <div>
               <label for="prenom">Prénom</label>
               <input type="text" id="prenom" name="prenom" required>
-            </div>
-
-            <div>
-              <label for="profession">Profession</label>
-              <input type="text" id="profession" name="profession" required>
             </div>
 
             <div>
@@ -287,13 +279,12 @@
 
       const nom = document.getElementById("nom").value.trim();
       const prenom = document.getElementById("prenom").value.trim();
-      const profession = document.getElementById("profession").value.trim();
       const email = document.getElementById("email").value.trim();
 
-      const subject = "Nouvelle inscription à la Lettre HQM Age Lab";
+      const subject = "Nouvelle inscription à l'Étude HQM Age Lab";
 
       const body =
-`NOUVELLE INSCRIPTION À LA LETTRE HQM AGE LAB
+`NOUVELLE INSCRIPTION À L'ÉTUDE HQM AGE LAB
 
 Nom : ${nom}
 Prénom : ${prenom}
