@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurer une routine · LF:Lab</title>
+<meta name="description" content="Configurateur de routines LF:Lab — longévité fonctionnelle.">
+<style>
+:root{
+  --ink:#202426;
+  --muted:#6c7375;
+  --paper:#f7f6f1;
+  --white:#ffffff;
+  --accent:#b7cdb0;
+  --accent-dark:#58745f;
+  --line:#dfe2dc;
+  --shadow:0 14px 40px rgba(25,31,29,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+.site-header{
+  height:78px;background:rgba(247,246,241,.96);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(22px,5vw,72px);position:sticky;top:0;z-index:20;
+}
+.logo{font-size:20px;font-weight:700;letter-spacing:-.03em}
+.nav{display:flex;gap:28px;align-items:center;font-size:14px}
+.nav a{color:#4d5355}
+.nav a:hover{color:var(--accent-dark)}
+.menu{font-size:22px;border:0;background:transparent;display:none}
+main{min-height:calc(100vh - 160px)}
+.hero{
+  max-width:1100px;margin:0 auto;padding:70px 24px 100px;
+}
+.progress-wrap{max-width:760px;margin:0 auto 38px}
+.progress-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:8px}
+.progress{height:4px;background:#e4e6e0;border-radius:99px;overflow:hidden}
+.progress>span{display:block;height:100%;background:var(--accent-dark);transition:width .35s ease}
+.step{
+  display:none;max-width:900px;margin:0 auto;text-align:center;
+  animation:fade .35s ease;
+}
+.step.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{
+  color:var(--accent-dark);font-size:12px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px;
+}
+h1,h2{font-weight:500;letter-spacing:-.045em;line-height:1.08;margin:0 auto}
+h1{font-size:clamp(38px,6vw,68px);max-width:900px}
+h2{font-size:clamp(28px,4vw,48px);max-width:900px}
+.intro{font-size:18px;line-height:1.65;color:var(--muted);max-width:720px;margin:24px auto 0}
+.choice-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  max-width:760px;margin:42px auto 0;
+}
+.choice{
+  min-height:74px;padding:18px 20px;border:1px solid var(--line);
+  border-radius:14px;background:var(--white);cursor:pointer;
+  transition:.18s ease;box-shadow:0 2px 0 rgba(0,0,0,.02);
+}
+.choice:hover,.choice.selected{border-color:var(--accent-dark);transform:translateY(-2px);box-shadow:var(--shadow)}
+.choice.selected{background:#f0f5ee}
+.nav-actions{display:flex;justify-content:center;gap:12px;margin-top:34px}
+.btn{
+  border:1px solid var(--ink);background:var(--ink);color:white;
+  padding:13px 22px;border-radius:999px;cursor:pointer;font-size:14px;
+}
+.btn.secondary{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.routine-card{
+  margin:34px auto 0;max-width:1080px;background:var(--white);
+  border:1px solid var(--line);border-radius:20px;padding:22px;
+  box-shadow:var(--shadow);text-align:left;overflow-x:auto;
+}
+.routine-title{text-align:center;font-size:15px;color:var(--muted);margin:0 0 18px}
+.days{
+  display:grid;grid-template-columns:repeat(7,minmax(112px,1fr));gap:8px;
+  min-width:840px;
+}
+.day{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfbf8}
+.day h3{font-size:13px;margin:0;padding:12px 8px;text-align:center;background:#f1f3ed}
+.option{
+  width:100%;text-align:left;border:0;border-bottom:1px solid #eceee9;
+  background:transparent;padding:11px 9px;min-height:58px;cursor:pointer;
+  font-size:12px;line-height:1.35;color:#343a3c;
+}
+.option:last-of-type{border-bottom:0}
+.option:hover{background:#f5f7f3}
+.option.selected{background:var(--accent);color:#1d3022;font-weight:700}
+.other-input{
+  display:none;width:calc(100% - 14px);margin:7px;border:1px solid var(--accent-dark);
+  border-radius:8px;padding:8px;font-size:12px;background:white;
+}
+.other-input.visible{display:block}
+.limit{font-size:11px;color:var(--muted);margin-top:4px;text-align:center}
+.summary{
+  max-width:1080px;margin:30px auto 0;background:var(--white);
+  border:1px solid var(--line);border-radius:20px;padding:28px;text-align:left;
+}
+.summary h3{margin-top:0;font-size:20px;font-weight:600}
+.summary-domain{margin-top:24px}
+.summary-domain h4{margin:0 0 10px;color:var(--accent-dark)}
+.summary-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.summary-day{background:#f5f6f2;border-radius:10px;padding:10px;font-size:12px;line-height:1.35}
+.summary-day strong{display:block;margin-bottom:5px}
+footer{
+  border-top:1px solid var(--line);padding:30px clamp(22px,5vw,72px);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  color:var(--muted);font-size:12px;background:var(--paper);
+}
+@media(max-width:800px){
+  .nav{display:none}.menu{display:block}
+  .choice-grid{grid-template-columns:1fr}
+  .hero{padding-top:48px}
+  .summary-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="index.html">LF:Lab</a>
+  <nav class="nav" aria-label="Navigation">
+    <a href="index.html">Accueil</a>
+    <a href="index.html#services">Services</a>
+    <a href="newsletter.html">La Lettre mensuelle</a>
+    <a href="index.html#manifeste">Le Manifeste</a>
+  </nav>
+  <button class="menu" aria-label="Menu">☰</button>
+</header>
+
+<main>
+<section class="hero">
+  <div class="progress-wrap">
+    <div class="progress-meta"><span id="progressLabel">Étape 1 sur 4</span><span id="progressPercent">25 %</span></div>
+    <div class="progress"><span id="progressBar" style="width:25%"></span></div>
+  </div>
+
+  <div class="step active" id="step1">
+    <div class="kicker">Configurer une routine</div>
+    <h1>Première étape, quel temps total voulez-vous consacrer à vos 3 routines chaque jour&nbsp;?</h1>
+    <p class="intro">Choisissez le temps que vous souhaitez consacrer chaque jour à votre routine cognitive, psychologique et physique.</p>
+    <div class="choice-grid" id="timeChoices">
+      <button class="choice" data-time="15">15 minutes au total par jour</button>
+      <button class="choice" data-time="45">45 minutes au total par jour</button>
+      <button class="choice" data-time="90">1h30 au total par jour</button>
+    </div>
+  </div>
+
+  <div class="step" id="step2">
+    <div class="kicker">Deuxième étape · Cognitif</div>
+    <h2>Nous allons configurer ensemble votre nouvelle routine de renforcement de vos capacités cognitives.</h2>
+    <div class="routine-card">
+      <p class="routine-title">Choisissez une routine pour chaque jour</p>
+      <div class="days" id="cognitiveDays"></div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn secondary" onclick="goTo(1)">← Retour</button>
+      <button class="btn" onclick="nextDomain('cognitive')">Continuer →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step3">
+    <div class="kicker">Troisième étape · Psychologique</div>
+    <h2>Nous allons configurer ensemble votre nouvelle routine de renforcement de vos capacités psychologiques.</h2>
+    <div class="routine-card">
+      <p class="routine-title">Choisissez une routine pour chaque jour</p>
+      <div class="days" id="psychologicalDays"></div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn secondary" onclick="goTo(2)">← Retour</button>
+      <button class="btn" onclick="nextDomain('psychological')">Continuer →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step4">
+    <div class="kicker">Quatrième étape · Physique</div>
+    <h2>Nous allons configurer ensemble votre nouvelle routine de renforcement de vos capacités physiques.</h2>
+    <div class="routine-card">
+      <p class="routine-title">Choisissez une routine pour chaque jour</p>
+      <div class="days" id="physicalDays"></div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn secondary" onclick="goTo(3)">← Retour</button>
+      <button class="btn" onclick="showSummary()">Voir ma semaine type →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step5">
+    <div class="kicker">Votre semaine type</div>
+    <h2>Votre routine est configurée.</h2>
+    <p class="intro">Retrouvez ci-dessous vos habitudes choisies pour chacun des trois domaines.</p>
+    <div class="summary" id="summary"></div>
+    <div class="nav-actions">
+      <button class="btn secondary" onclick="goTo(4)">← Modifier</button>
+      <button class="btn" onclick="downloadPDF()">Télécharger ma semaine type en PDF</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div>© 2026 LF:Lab · Une plateforme pédagogique pour faire progresser la longévité fonctionnelle.</div>
+  <div><a href="mailto:oliv.hqm@gmail.com">Contact</a> · <a href="index.html">Mentions et informations</a></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script>
+const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+
+const routines={
+  cognitive:{
+    15:["Le mot nouveau","Calcul mental","L’activation de la mémoire profonde","Les numéros de la vie quotidienne","Jeu de réflexion","Autre"],
+    45:["Une lecture intentionnelle","Jeu de réflexion en ligne","Nouvel apprentissage","Autre"],
+    90:["La mémoire active","La lecture active et restitution","Flexibilité cognitive","Le cahier de vacance","Langue étrangère","Ecriture","Autre"]
+  },
+  psychological:{
+    15:["Le journal de gratitude","Les paroles positives","La déconnexion totale","Autre"],
+    45:["La marche en pleine conscience","La méditation guidée","La connexion asynchrone avec les autres","Une lecture de développement personnel","Autre"],
+    90:["Séance d’introspection","Le carnet des personnes chères","La projection","Bénévolat","Autre"]
+  },
+  physical:{
+    15:["La respiration profonde","L’équilibre sur une seule jambe","Étirement de tout le corps","Abdominos","Planche","Chaise","Autre"],
+    45:["Marche rapide","Renforcement musculaire avec le poids du corps","Renforcement musculaire avec des poids","Développement de la mobilité","Danse cardio","Toute activité de musculation ou de cardio avec un équipement à domicile.","Autre"],
+    90:["Marche rapide","Renforcement musculaire avec le poids du corps","Renforcement musculaire avec des poids","Développement de la mobilité","Danse cardio","Toute activité de musculation ou de cardio avec un équipement à domicile.","Le circuit de souveraineté physique","Sports d’endurance","Autre"]
+  }
+};
+
+const state={
+  time:null,
+  cognitive:Array(7).fill(null),
+  psychological:Array(7).fill(null),
+  physical:Array(7).fill(null)
+};
+
+function goTo(n){
+  document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+  document.getElementById("step"+n).classList.add("active");
+  const progress=n===5?100:n*25;
+  document.getElementById("progressLabel").textContent=n===5?"Routine terminée":`Étape ${n} sur 4`;
+  document.getElementById("progressPercent").textContent=progress+" %";
+  document.getElementById("progressBar").style.width=progress+"%";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll("#timeChoices .choice").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("#timeChoices .choice").forEach(b=>b.classList.remove("selected"));
+    btn.classList.add("selected");
+    state.time=Number(btn.dataset.time);
+    buildDomain("cognitive","cognitiveDays");
+    buildDomain("psychological","psychologicalDays");
+    buildDomain("physical","physicalDays");
+    setTimeout(()=>goTo(2),160);
+  });
+});
+
+function buildDomain(domain,id){
+  const root=document.getElementById(id);
+  root.innerHTML="";
+  routines[domain][state.time].forEach((_,i)=>{});
+  days.forEach((day,d)=>{
+    const col=document.createElement("div");
+    col.className="day";
+    const h=document.createElement("h3"); h.textContent=day; col.appendChild(h);
+    routines[domain][state.time].forEach((label,i)=>{
+      const b=document.createElement("button");
+      b.className="option"+(state[domain][d]?.label===label?" selected":"");
+      b.textContent=label;
+      b.type="button";
+      b.onclick=()=>selectOption(domain,d,label,b,col);
+      col.appendChild(b);
+    });
+    root.appendChild(col);
+  });
+}
+
+function selectOption(domain,day,label,button,col){
+  [...col.querySelectorAll(".option")].forEach(b=>b.classList.remove("selected"));
+  button.classList.add("selected");
+  let customInput=col.querySelector(".other-input");
+  if(customInput) customInput.remove();
+  if(label==="Autre"){
+    customInput=document.createElement("input");
+    customInput.className="other-input visible";
+    customInput.maxLength=50;
+    customInput.placeholder="Votre habitude (50 caractères maximum)";
+    customInput.value=state[domain][day]?.custom||"";
+    customInput.addEventListener("input",()=>{
+      state[domain][day]={label:"Autre",custom:customInput.value.slice(0,50)};
+    });
+    col.appendChild(customInput);
+    state[domain][day]={label:"Autre",custom:customInput.value};
+    customInput.focus();
+  }else{
+    state[domain][day]={label,custom:null};
+  }
+}
+
+function nextDomain(domain){
+  const missing=state[domain].some(x=>!x || (x.label==="Autre" && !x.custom.trim()));
+  if(missing){
+    alert("Choisissez une habitude pour chaque jour. Si vous choisissez « Autre », renseignez votre habitude.");
+    return;
+  }
+  if(domain==="cognitive") goTo(3);
+  else if(domain==="psychological") goTo(4);
+}
+
+function showSummary(){
+  const missing=state.physical.some(x=>!x || (x.label==="Autre" && !x.custom.trim()));
+  if(missing){
+    alert("Choisissez une habitude pour chaque jour. Si vous choisissez « Autre », renseignez votre habitude.");
+    return;
+  }
+  const names={cognitive:"Capacités cognitives",psychological:"Capacités psychologiques",physical:"Capacités physiques"};
+  const box=document.getElementById("summary");
+  box.innerHTML=`<h3>${state.time===90?"1h30":state.time+" minutes"} au total par jour</h3>`;
+  ["cognitive","psychological","physical"].forEach(domain=>{
+    const section=document.createElement("div"); section.className="summary-domain";
+    section.innerHTML=`<h4>${names[domain]}</h4><div class="summary-grid"></div>`;
+    const grid=section.querySelector(".summary-grid");
+    state[domain].forEach((x,i)=>{
+      const d=document.createElement("div"); d.className="summary-day";
+      d.innerHTML=`<strong>${days[i]}</strong>${escapeHtml(x.label==="Autre"?x.custom:x.label)}`;
+      grid.appendChild(d);
+    });
+    box.appendChild(section);
+  });
+  goTo(5);
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+}
+
+async function downloadPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+  const W=297,H=210;
+  doc.setFillColor(247,246,241); doc.rect(0,0,W,H,"F");
+  doc.setTextColor(32,36,38);
+  doc.setFont("helvetica","bold"); doc.setFontSize(22); doc.text("LF:Lab",18,20);
+  doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(88,116,95);
+  doc.text("CONFIGURER UNE ROUTINE · SEMAINE TYPE",18,28);
+  doc.setTextColor(32,36,38); doc.setFontSize(16);
+  doc.text(`Temps total : ${state.time===90?"1h30":state.time+" minutes"} par jour`,18,42);
+  let y=52;
+  const names={cognitive:"Capacités cognitives",psychological:"Capacités psychologiques",physical:"Capacités physiques"};
+  for(const domain of ["cognitive","psychological","physical"]){
+    doc.setFont("helvetica","bold"); doc.setFontSize(12); doc.setTextColor(88,116,95);
+    doc.text(names[domain],18,y); y+=7;
+    const x0=18, gap=3, cw=(W-36-gap*6)/7;
+    state[domain].forEach((x,i)=>{
+      const xPos=x0+i*(cw+gap);
+      doc.setFillColor(255,255,255); doc.setDrawColor(223,226,220);
+      doc.roundedRect(xPos,y,cw,35,2,2,"FD");
+      doc.setTextColor(32,36,38); doc.setFont("helvetica","bold"); doc.setFontSize(8);
+      doc.text(days[i],xPos+3,y+6);
+      doc.setFont("helvetica","normal"); doc.setFontSize(7);
+      const text=x.label==="Autre"?x.custom:x.label;
+      const lines=doc.splitTextToSize(text,cw-6);
+      doc.text(lines.slice(0,4),xPos+3,y+12,{lineHeightFactor:1.25});
+    });
+    y+=43;
+  }
+  doc.setFont("helvetica","normal"); doc.setFontSize(7); doc.setTextColor(108,115,117);
+  doc.text("LF:Lab · Une plateforme pédagogique pour faire progresser la longévité fonctionnelle.",18,H-10);
+  doc.save("LF-Lab-semaine-type.pdf");
+}
+</script>
+</body>
+</html>
