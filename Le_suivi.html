@@ -238,34 +238,17 @@
         </section>
 
         <section class="form-card">
-          <h2>Demander un suivi</h2>
-          <p class="sub">
-            Renseignez vos coordonnées pour vous bénéficier d'un suivi individuel.
-          </p>
+    
+          <button
+            type="button"
+            onclick="window.open('https://calendly.com/oliv-hqm/30min', '_blank')">
+            Demander un rendez-vous
+          </button>
 
-          <form id="L'Étude Form">
-            <div>
-              <label for="nom">Nom</label>
-              <input type="text" id="nom" name="nom" required>
-            </div>
-
-            <div>
-              <label for="prenom">Prénom</label>
-              <input type="text" id="prenom" name="prenom" required>
-            </div>
-
-            <div>
-              <label for="email">Adresse courriel</label>
-              <input type="email" id="email" name="email" required>
-            </div>
-
-            <button type="submit">Postuler</button>
+          
           </form>
 
-          <p class="note">
-            En cliquant sur « S'abonner », votre logiciel de messagerie
-            s'ouvrira avec un courriel prérempli à destination de
-            <strong>oliv.hqm@gmail.com</strong>.
+        
           </p>
         </section>
 
@@ -277,32 +260,7 @@
     © 2026 LF:Lab · Une plateforme pédagogique pour faire progresser la longévité fonctionnelle.
   </footer>
 
-  <script>
-    document.getElementById("newsletterForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      const nom = document.getElementById("nom").value.trim();
-      const prenom = document.getElementById("prenom").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      const subject = "Nouvelle demande de suivi individuel par LF:Lab";
-
-      const body =
-`NOUVELLE INSCRIPTION AU SUIVI LF:LAB
-
-Nom : ${nom}
-Prénom : ${prenom}
-Profession : ${profession}
-Adresse courriel : ${email}`;
-
-      const mailto =
-        "mailto:oliv.hqm@gmail.com" +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
-
-      window.location.href = mailto;
-    });
-  </script>
+ 
 
 </body>
 </html>
