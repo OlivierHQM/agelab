@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Configurer une routines · LF:Lab</title>
-<meta name="description" content="Configurateur de routiness LF:Lab — longévité fonctionnelle.">
+<title>Configurer une routine · LF:Lab</title>
+<meta name="description" content="Configurateur de routines LF:Lab — longévité fonctionnelle.">
 <style>
 :root{
   --ink:#202426;
@@ -154,9 +154,9 @@ footer{
 
   <div class="step" id="step2">
     <div class="kicker">Deuxième étape</div>
-    <h2>Nous allons configurer ensemble votre nouvelle routines de protection de vos capacités cognitives.</h2>
+    <h2>Nous allons configurer ensemble votre nouvelle routine de protection de vos capacités cognitives.</h2>
     <div class="routines-card">
-      <p class="routines-title">Choisissez une routines pour chaque jour</p>
+      <p class="routines-title">Choisissez une routine pour chaque jour</p>
       <div class="days" id="cognitiveDays"></div>
     </div>
     <div class="nav-actions">
@@ -167,9 +167,9 @@ footer{
 
   <div class="step" id="step3">
     <div class="kicker">Troisième étape</div>
-    <h2>Continuons avec votre nouvelle routines de protection de vos capacités psychologiques.</h2>
+    <h2>Continuons avec votre nouvelle routine de protection de vos capacités psychologiques.</h2>
     <div class="routines-card">
-      <p class="routines-title">Choisissez une routines pour chaque jour</p>
+      <p class="routines-title">Choisissez une routine pour chaque jour</p>
       <div class="days" id="psychologicalDays"></div>
     </div>
     <div class="nav-actions">
@@ -180,9 +180,9 @@ footer{
 
   <div class="step" id="step4">
     <div class="kicker">Quatrième étape</div>
-    <h2>Terminons avec votre nouvelle routines de protection de vos capacités physiques.</h2>
+    <h2>Terminons avec votre nouvelle routine de protection de vos capacités physiques.</h2>
     <div class="routines-card">
-      <p class="routines-title">Choisissez une routines pour chaque jour</p>
+      <p class="routines-title">Choisissez une routine pour chaque jour</p>
       <div class="days" id="physicalDays"></div>
     </div>
     <div class="nav-actions">
@@ -193,7 +193,7 @@ footer{
 
   <div class="step" id="step5">
     <div class="kicker">Votre semaine type</div>
-    <h2>Félicitations ! Votre routines est configurée.</h2>
+    <h2>Félicitations ! Votre routine est configurée.</h2>
     <p class="intro">Retrouvez ci-dessous vos habitudes choisies pour chacun des trois domaines.</p>
     <div class="summary" id="summary"></div>
     <div class="nav-actions">
@@ -205,7 +205,7 @@ footer{
 </main>
 
 <footer>
-  <div>© 2026 LF:Lab · Une plateforme de routines pour faire progresser la longévité fonctionnelle.</div>
+  <div>© 2026 LF:Lab · Une plateforme de longévité fonctionnelle.</div>
   <div><a href="mailto:oliv.hqm@gmail.com">Contact</a></div>
 </footer>
 
@@ -242,7 +242,7 @@ function goTo(n){
   document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
   document.getElementById("step"+n).classList.add("active");
   const progress=n===5?100:n*25;
-  document.getElementById("progressLabel").textContent=n===5?"routines terminée":`Étape ${n} sur 4`;
+  document.getElementById("progressLabel").textContent=n===5?"routine terminée":`Étape ${n} sur 4`;
   document.getElementById("progressPercent").textContent=progress+" %";
   document.getElementById("progressBar").style.width=progress+"%";
   window.scrollTo({top:0,behavior:"smooth"});
@@ -347,7 +347,7 @@ async function downloadPDF(){
   doc.setTextColor(32,36,38);
   doc.setFont("helvetica","bold"); doc.setFontSize(22); doc.text("LF:Lab",18,20);
   doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(88,116,95);
-  doc.text("CONFIGURER UNE routines · SEMAINE TYPE",18,28);
+  doc.text("CONFIGURER UNE routine · SEMAINE TYPE",18,28);
   doc.setTextColor(32,36,38); doc.setFontSize(16);
   doc.text(`Temps total : ${state.time===90?"1h30":state.time+" minutes"} par jour`,18,42);
   let y=52;
@@ -370,7 +370,7 @@ async function downloadPDF(){
     y+=43;
   }
   doc.setFont("helvetica","normal"); doc.setFontSize(7); doc.setTextColor(108,115,117);
-  doc.text("LF:Lab · Une plateforme de routines pour faire progresser la longévité fonctionnelle.",18,H-10);
+  doc.text("LF:Lab · Une plateforme de longévité fonctionnelle.",18,H-10);
   doc.save("LF-Lab-semaine-type.pdf");
 }
 </script>
