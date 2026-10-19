@@ -347,10 +347,10 @@ async function downloadPDF(){
   doc.setTextColor(32,36,38);
   doc.setFont("helvetica","normal"); doc.setFontSize(5); doc.text("LF:Lab",18,20);
   doc.setFont("helvetica","bold"); doc.setFontSize(22); doc.setTextColor(88,116,95);
-  doc.text("MA SEMAINE DE ROUTINES",18,28);
+  doc.text("MA SEMAINE DE ROUTINES";
     doc.internal.pageSize.getWidth() / 2,
   28,
-  { align: "center" }
+  { align: "center" });
   doc.setTextColor(32,36,38); doc.setFontSize(16);
   doc.text(`Temps total : ${state.time===90?"1h30":state.time+" minutes"} par jour`,18,42);
   let y=52;
