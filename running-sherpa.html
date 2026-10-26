@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Running Sherpa : assistance logistique pour challenge privé de course à pied">
+  <meta name="theme-color" content="#f4efe3">
+  <title>RUNNING SHERPA</title>
+
+  <style>
+    :root {
+      --paper: #f4efe3;
+      --ink: #171717;
+      --orange: #ff873d;
+      --teal: #39c8bd;
+      --marker-yellow: #ffde59;
+      --gray: #5b5b5b;
+      --max-width: 1120px;
+      --black: var(--ink);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Archivo", Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+    }
+
+    /* Fond topographique dessiné à la main */
+
+    .topographic-background {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+      background: var(--paper);
+    }
+
+    .topographic-background svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ---------- Barre supérieure ---------- */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--paper);
+      border-bottom: 4px solid var(--ink);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-family: "Archivo Black", "Arial Black", Impact, sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      color: var(--ink);
+    }
+
+    .brand span {
+      color: var(--ink);
+      background: var(--marker-yellow);
+      padding: 0 8px;
+      transform: rotate(-1.5deg);
+      display: inline-block;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    .nav-booking {
+      transform: rotate(-1.2deg);
+    }
+
+    /* ---------- Hero ---------- */
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 48px;
+      padding: 90px 0 20px;
+    }
+
+    .hero-copy,
+    .hero-booking {
+      min-width: 0;
+      position: relative;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 14px;
+      margin-bottom: 24px;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transform: rotate(-2deg);
+    }
+
+    .hero-title {
+      margin: 0 0 24px;
+      font-family: "Archivo Black", "Arial Black", Impact, sans-serif;
+      font-size: clamp(44px, 7vw, 84px);
+      line-height: 0.98;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+
+    .hero-title span {
+      display: inline-block;
+      color: var(--ink);
+      background: var(--orange);
+      padding: 0 10px;
+      transform: rotate(-1.5deg);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    .hero-subtitle {
+      max-width: 480px;
+      margin: 0 0 18px;
+      font-size: clamp(20px, 2.6vw, 27px);
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle .marker {
+      background: linear-gradient(180deg, transparent 58%, var(--marker-yellow) 58%);
+      padding: 0 2px;
+    }
+
+    .hero-description {
+      max-width: 470px;
+      margin: 0 0 26px;
+      color: #444;
+      font-size: 16px;
+    }
+
+    .section-label {
+      display: inline-block;
+      margin: 0 0 14px;
+      padding: 3px 10px;
+      background: var(--teal);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transform: rotate(-1.5deg);
+    }
+
+    .hero-booking {
+      padding: 30px;
+      border: 3px solid var(--ink);
+      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+      background: #fffdf6;
+      transform: rotate(1deg);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+
+    .hero-booking h3 {
+      margin: 0 0 18px;
+      font-family: "Archivo Black", "Arial Black", Impact, sans-serif;
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Boutons "sticker" ---------- */
+
+    .button {
+      display: inline-block;
+      padding: 13px 22px;
+      border: 3px solid var(--ink);
+      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      color: var(--ink);
+      background: var(--marker-yellow);
+      box-shadow: 4px 4px 0 var(--ink);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .button:hover {
+      transform: translate(2px, 2px) rotate(-1deg);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .button-primary { background: var(--orange); }
+    .button-secondary { background: var(--teal); }
+
+    /* ---------- Piste d'animation des coureurs ---------- */
+
+    .run-strip {
+      position: relative;
+      height: 230px;
+      margin-top: 8px;
+      overflow: hidden;
+      border-top: 4px solid var(--ink);
+      border-bottom: 4px solid var(--ink);
+      background: #efe7d3;
+    }
+
+    .run-strip .ground {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 14px;
+      border-bottom: 3px dashed var(--ink);
+      opacity: 0.55;
+    }
+
+    .run-track {
+      position: absolute;
+      bottom: 24px;
+      left: 0;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: flex-end;
+      gap: 90px;
+      animation: track-across 14s linear infinite;
+      will-change: transform;
+    }
+
+    .run-track > svg {
+      display: block;
+    }
+
+    @keyframes track-across {
+      from { transform: translateX(-560px); }
+      to   { transform: translateX(calc(100vw + 40px)); }
+    }
+
+    /* Membres des personnages : balancement */
+
+    .limb {
+      transform-box: fill-box;
+      transform-origin: top center;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      animation-direction: alternate;
+    }
+
+    .arm-a { animation-name: swing-a; animation-duration: 0.45s; }
+    .arm-b { animation-name: swing-b; animation-duration: 0.45s; }
+    .leg-a { animation-name: swing-a; animation-duration: 0.45s; }
+    .leg-b { animation-name: swing-b; animation-duration: 0.45s; }
+
+    @keyframes swing-a { from { transform: rotate(-34deg); } to { transform: rotate(38deg); } }
+    @keyframes swing-b { from { transform: rotate(38deg); } to { transform: rotate(-34deg); } }
+
+    .bob {
+      animation: bob 0.45s ease-in-out infinite alternate;
+    }
+
+    @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+
+    .wheel-spin {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .cape-flow {
+      transform-box: fill-box;
+      transform-origin: top left;
+      animation: flutter 0.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes flutter { from { transform: rotate(-6deg); } to { transform: rotate(8deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .run-track, .limb, .wheel-spin, .bob, .cape-flow { animation: none; }
+    }
+
+    /* ---------- Vidéo ---------- */
+
+    .video-section { padding: 48px 0 64px; }
+
+    .video-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 4px solid var(--ink);
+      border-radius: 18px 255px 18px 225px / 255px 18px 225px 18px;
+      background: #e9e2ce;
+      aspect-ratio: 16 / 9;
+      box-shadow: 8px 8px 0 var(--ink);
+      transform: rotate(-0.6deg);
+    }
+
+    .video-wrap iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* ---------- Sections ---------- */
+
+    section.content-section {
+      padding: 72px 0;
+      border-top: 4px dashed rgba(23, 23, 23, 0.5);
+      scroll-margin-top: 90px;
+    }
+
+    .content-section h2 {
+      margin: 0 0 24px;
+      font-family: "Archivo Black", "Arial Black", Impact, sans-serif;
+      font-size: clamp(28px, 4.4vw, 46px);
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    .content-section h2 .marker {
+      background: linear-gradient(180deg, transparent 55%, var(--marker-yellow) 55%);
+      padding: 0 3px;
+    }
+
+    .section-content {
+      max-width: 720px;
+      color: #333;
+      font-size: 17px;
+    }
+
+    .section-content p { margin: 0 0 16px; }
+
+    .highlight {
+      background: linear-gradient(180deg, transparent 55%, rgba(255, 135, 61, 0.55) 55%);
+      font-weight: 750;
+      padding: 0 2px;
+    }
+
+    /* ---------- Tarif ---------- */
+
+    .price {
+      margin: 26px 0;
+      padding: 26px;
+      border: 3px solid var(--ink);
+      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+      background: #fffdf6;
+      box-shadow: 6px 6px 0 var(--ink);
+      transform: rotate(-0.8deg);
+    }
+
+    .price-amount {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-family: "Archivo Black", "Arial Black", Impact, sans-serif;
+      font-size: clamp(42px, 6vw, 60px);
+      line-height: 1.1;
+      color: var(--ink);
+      background: var(--marker-yellow);
+      padding: 0 14px;
+      transform: rotate(-2deg);
+    }
+
+    .price p { margin-bottom: 6px; color: var(--gray); }
+    .price p:last-child { margin-bottom: 0; }
+
+    /* ---------- À propos ---------- */
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 42px;
+      align-items: start;
+    }
+
+    .about-badge {
+      display: inline-block;
+      padding: 8px 12px;
+      background: var(--orange);
+      border: 3px solid var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      transform: rotate(2deg);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    /* ---------- Footer ---------- */
+
+    footer {
+      padding: 28px 0;
+      border-top: 4px solid var(--ink);
+      color: var(--gray);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: #e9e2ce;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    /* ---------- Mobile ---------- */
+
+    @media (max-width: 760px) {
+      .nav { min-height: 64px; }
+      .brand { font-size: 16px; }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 34px;
+        padding: 56px 0 20px;
+      }
+      .hero-booking { transform: none; }
+      .run-strip { height: 190px; }
+      .video-section { padding: 36px 0 48px; }
+      section.content-section { padding: 52px 0; }
+      .about { grid-template-columns: 1fr; gap: 20px; }
+      .price { transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Fond topographique dessiné à la main -->
+  <div class="topographic-background" aria-hidden="true">
+    <svg viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMin slice"
+         xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#ff873d" stroke-width="2" stroke-linecap="round" opacity="0.28">
+        <path d="M-100 120 C60 40 160 60 240 130 S420 230 520 140 S760 30 900 110 S1200 220 1700 90"/>
+        <path d="M-100 155 C60 75 160 95 240 165 S420 265 520 175 S760 65 900 145 S1200 255 1700 125"/>
+        <path d="M-100 190 C60 110 160 130 240 200 S420 300 520 210 S760 100 900 180 S1200 290 1700 160"/>
+        <path d="M100 1300 C-40 1080 160 900 380 940 S680 1120 820 970 S900 730 1080 700 S1400 840 1700 320"/>
+        <path d="M140 1300 C0 1080 200 920 420 960 S720 1140 860 990 S940 750 1120 720 S1440 860 1740 340"/>
+      </g>
+      <g fill="none" stroke="#39c8bd" stroke-width="2" stroke-linecap="round" opacity="0.24">
+        <path d="M60 540 C20 470 90 400 170 380 S300 400 320 330 S280 230 350 200 S470 240 490 310 S450 430 520 460 S640 430 760 500"/>
+        <path d="M90 540 C50 470 120 420 190 405 S280 420 295 345 S275 260 355 230 S440 260 460 325 S430 405 505 435 S635 415 760 480"/>
+        <path d="M-80 370 C20 320 110 340 150 405 S205 500 290 465 S405 365 480 390 S570 500 700 460"/>
+        <path d="M-80 400 C20 350 110 370 150 435 S205 530 290 495 S405 395 480 420 S570 530 700 490"/>
+        <path d="M-100 1010 C160 900 360 960 460 1040 S720 1120 900 1010 S1250 900 1700 1020"/>
+        <path d="M-100 1045 C160 935 360 995 460 1075 S720 1155 900 1045 S1250 935 1700 1055"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Barre de navigation -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#accueil">RUNNING <span>SHERPA</span></a>
+
+      <a class="button button-primary nav-booking"
+         href="https://calendly.com/oliv-hqm/30min"
+         target="_blank" rel="noopener noreferrer">
+        Réserver une visio
+      </a>
+    </div>
+  </header>
+
+  <main id="accueil">
+
+    <!-- Accueil -->
+    <div class="container">
+      <section class="hero">
+
+        <div class="hero-copy">
+          <p class="eyebrow">Bassin d'Arcachon — 50 km</p>
+
+          <h1 class="hero-title">
+            RUNNING <span>SHERPA</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            La logistique de ton <span class="marker">challenge privé</span> de course à pied
+          </p>
+
+          <p class="hero-description">
+            Tu te concentres sur ta foulée. Ton sherpa s'occupe de tout le reste :
+            ravitaillements, affaires, film souvenir.
+          </p>
+
+          <a class="button button-secondary"
+             href="#concept">Découvrir le concept</a>
+        </div>
+
+        <aside class="hero-booking">
+          <p class="section-label">On part ensemble ?</p>
+          <h3>Construisons ton challenge privé ensemble</h3>
+
+          <a class="button button-primary"
+             href="https://calendly.com/oliv-hqm/30min"
+             target="_blank" rel="noopener noreferrer">
+            Réserve une visio de 30 minutes
+          </a>
+        </aside>
+
+      </section>
+    </div>
+
+    <!-- Animation : une femme et un homme qui courent, suivis d'un sherpa à vélo -->
+    <div class="run-strip" aria-hidden="true">
+      <div class="ground"></div>
+      <div class="run-track">
+
+        <!-- Coureuse -->
+        <svg width="160" height="180" viewBox="0 0 170 190" xmlns="http://www.w3.org/2000/svg">
+          <g class="bob">
+            <!-- queue de cheval -->
+            <path d="M58 36 C42 30 30 42 34 58 C37 70 32 80 24 86"
+                  fill="none" stroke="#171717" stroke-width="8" stroke-linecap="round"/>
+            <!-- tête -->
+            <circle cx="72" cy="40" r="17" fill="#f2c79b" stroke="#171717" stroke-width="5"/>
+            <circle cx="79" cy="38" r="2.8" fill="#171717"/>
+            <path d="M76 48 C79 51 84 50 86 46" fill="none"
+                  stroke="#171717" stroke-width="3" stroke-linecap="round"/>
+            <!-- torse -->
+            <path d="M62 55 C55 72 52 88 56 106 L84 106 C90 88 88 68 82 56 Z"
+                  fill="#ff873d" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <!-- short -->
+            <path d="M54 104 L86 104 L88 124 L69 124 L65 117 L60 124 L52 124 Z"
+                  fill="#39c8bd" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <!-- bras -->
+            <g class="limb arm-a">
+              <path d="M64 60 C50 66 40 76 34 88" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+            </g>
+            <g class="limb arm-b">
+              <path d="M80 60 C92 64 100 70 104 78" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+            </g>
+            <!-- jambes -->
+            <g class="limb leg-a">
+              <path d="M60 120 C50 134 44 148 38 160" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+              <path d="M28 158 C28 153 50 153 50 158 L47 172 C47 177 31 177 31 172 Z"
+                    fill="#fffdf6" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            </g>
+            <g class="limb leg-b">
+              <path d="M78 120 C86 134 90 150 96 162" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+              <path d="M86 160 C86 155 108 155 108 160 L105 174 C105 179 89 179 89 174 Z"
+                    fill="#fffdf6" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            </g>
+          </g>
+        </svg>
+
+        <!-- Coureur -->
+        <svg width="160" height="180" viewBox="0 0 170 190" xmlns="http://www.w3.org/2000/svg">
+          <g class="bob">
+            <!-- visière de casquette -->
+            <path d="M86 42 L108 46 L86 50 Z"
+                  fill="#ff873d" stroke="#171717" stroke-width="4" stroke-linejoin="round"/>
+            <!-- casquette -->
+            <path d="M58 36 C60 22 84 22 86 36 L86 44 L58 44 Z"
+                  fill="#ff873d" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <!-- tête -->
+            <circle cx="72" cy="48" r="17" fill="#f2c79b" stroke="#171717" stroke-width="5"/>
+            <circle cx="78" cy="46" r="2.8" fill="#171717"/>
+            <path d="M75 57 C79 60 85 58 87 54" fill="none"
+                  stroke="#171717" stroke-width="3" stroke-linecap="round"/>
+            <!-- torse -->
+            <path d="M62 63 C55 80 52 96 56 114 L84 114 C90 96 88 76 82 64 Z"
+                  fill="#39c8bd" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <!-- dossard -->
+            <path d="M60 70 L84 70 L82 94 L58 94 Z"
+                  fill="#fffdf6" stroke="#171717" stroke-width="4" stroke-linejoin="round"/>
+            <text x="71" y="87" font-size="13" font-weight="900" text-anchor="middle"
+                  fill="#171717" font-family="'Arial Black', Arial, sans-serif">50K</text>
+            <!-- bras -->
+            <g class="limb arm-b">
+              <path d="M64 68 C50 74 40 84 34 96" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+            </g>
+            <g class="limb arm-a">
+              <path d="M80 68 C92 72 100 78 104 86" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+            </g>
+            <!-- short -->
+            <path d="M54 112 L86 112 L88 132 L69 132 L65 125 L60 132 L52 132 Z"
+                  fill="#ffde59" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <!-- jambes -->
+            <g class="limb leg-b">
+              <path d="M60 128 C50 142 44 156 38 168" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+              <path d="M28 166 C28 161 50 161 50 166 L47 180 C47 185 31 185 31 180 Z"
+                    fill="#fffdf6" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            </g>
+            <g class="limb leg-a">
+              <path d="M78 128 C86 142 90 158 96 170" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+              <path d="M86 168 C86 163 108 163 108 168 L105 182 C105 187 89 187 89 182 Z"
+                    fill="#fffdf6" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            </g>
+          </g>
+        </svg>
+
+        <!-- Sherpa à vélo, derrière les coureurs -->
+        <svg width="230" height="175" viewBox="0 0 240 190" style="transform: scaleX(-1);" xmlns="http://www.w3.org/2000/svg">
+          <g class="bob">
+            <!-- roues -->
+            <g class="wheel-spin">
+              <circle cx="58" cy="150" r="32" fill="#fffdf6" stroke="#171717" stroke-width="6"/>
+              <path d="M58 120 L58 180 M28 150 L88 150 M38 130 L78 170 M78 130 L38 170"
+                    stroke="#171717" stroke-width="4"/>
+            </g>
+            <g class="wheel-spin">
+              <circle cx="186" cy="150" r="32" fill="#fffdf6" stroke="#171717" stroke-width="6"/>
+              <path d="M186 120 L186 180 M156 150 L216 150 M166 130 L206 170 M206 130 L166 170"
+                    stroke="#171717" stroke-width="4"/>
+            </g>
+            <!-- cadre rétro -->
+            <path d="M58 150 L100 92 L146 92 L186 150 M58 150 L100 92 M100 92 L92 74 M92 74 L80 78 M146 92 L154 74 M154 74 L186 150"
+                  fill="none" stroke="#39c8bd" stroke-width="9"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- guidon -->
+            <path d="M80 78 C70 70 64 72 60 80" fill="none"
+                  stroke="#171717" stroke-width="7" stroke-linecap="round"/>
+            <!-- sacs sur la selle -->
+            <path d="M150 70 L206 70 L206 104 C206 114 194 118 178 118 C162 118 150 114 150 104 Z"
+                  fill="#ff873d" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M156 70 L200 70" stroke="#171717" stroke-width="5"/>
+            <circle cx="162" cy="84" r="3" fill="#171717"/>
+            <circle cx="162" cy="97" r="3" fill="#171717"/>
+            <circle cx="194" cy="84" r="3" fill="#171717"/>
+            <circle cx="194" cy="97" r="3" fill="#171717"/>
+            <path d="M164 118 L164 132 M192 118 L192 132"
+                  stroke="#171717" stroke-width="5" stroke-linecap="round"/>
+            <!-- tête -->
+            <circle cx="92" cy="44" r="16" fill="#f2c79b" stroke="#171717" stroke-width="5"/>
+            <circle cx="99" cy="42" r="2.8" fill="#171717"/>
+            <path d="M95 51 C99 54 104 52 106 49" fill="none"
+                  stroke="#171717" stroke-width="3" stroke-linecap="round"/>
+            <!-- casque -->
+            <path d="M77 42 C78 26 106 26 107 42 L107 46 L77 46 Z"
+                  fill="#ffde59" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M107 44 L120 50 L107 52 Z"
+                  fill="#ffde59" stroke="#171717" stroke-width="4" stroke-linejoin="round"/>
+            <!-- torse -->
+            <path d="M96 58 L108 58 C116 74 122 84 128 92 L110 100 C102 88 96 74 92 60 Z"
+                  fill="#ff873d" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <!-- bras vers le guidon -->
+            <g class="limb arm-b" style="animation-name: none;">
+              <path d="M108 64 C92 68 78 74 66 80" fill="none"
+                    stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+            </g>
+            <!-- jambe qui pédale -->
+            <g class="limb leg-a" style="animation-duration: 0.6s;">
+              <path d="M114 96 C122 110 130 120 140 126 L134 134 C122 126 112 114 106 104"
+                    fill="none" stroke="#171717" stroke-width="9" stroke-linecap="round"/>
+            </g>
+            <path d="M136 126 C136 121 156 121 156 126 L153 138 C153 143 139 143 139 138 Z"
+                  fill="#fffdf6" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+            <!-- écharpe au vent -->
+            <g class="cape-flow">
+              <path d="M92 60 C74 62 62 70 52 82 C60 82 68 79 76 74"
+                    fill="#39c8bd" stroke="#171717" stroke-width="4" stroke-linejoin="round"/>
+            </g>
+          </g>
+        </svg>
+
+      </div>
+    </div>
+
+    <!-- Vidéo de présentation -->
+    <div class="container video-section">
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/MoMcG_gAZGc"
+          title="Présentation de Running Sherpa"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Le concept -->
+    <section class="content-section" id="concept">
+      <div class="container">
+        <p class="section-label">01 — Le concept</p>
+        <h2>Tu cours. <span class="marker">Je gère le reste.</span></h2>
+
+        <div class="section-content">
+          <p>
+            Le running-sherpa te laisse te concentrer sur ton challenge
+            privé de course à pied.
+          </p>
+          <p>
+            En assurant l'assistance à vélo, je porte toutes tes affaires :
+            vêtements de protection et de rechange, alimentation, boissons,
+            etc. J'organise <span class="highlight">autant de points de
+            ravitaillement</span> que tu le souhaites.
+          </p>
+          <p>
+            Je capture également ta course à la GoPro et je te livre
+            un <span class="highlight">film souvenir</span>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Le parcours -->
+    <section class="content-section" id="parcours">
+      <div class="container">
+        <p class="section-label">02 — Le parcours</p>
+        <h2>Le tour du <span class="marker">Bassin d'Arcachon.</span></h2>
+
+        <div class="section-content">
+          <p>
+            D'Arcachon, jetée Thiers, au Cap Ferret, jetée Bélisaire :
+            un challenge de <span class="highlight">50 km</span> sur l'un
+            des plus beaux sites naturels du monde.
+          </p>
+          <p>Retour à Arcachon par navette maritime.</p>
+          <p>
+            Un autre parcours en tête ? Toute autre destination est
+            envisageable grâce à une prestation sur mesure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Le tarif -->
+    <section class="content-section" id="tarif">
+      <div class="container">
+        <p class="section-label">03 — Le tarif</p>
+        <h2>Une formule <span class="marker">simple.</span></h2>
+
+        <div class="section-content">
+          <div class="price">
+            <div class="price-amount">200 €</div>
+            <p>Forfait jusqu'à trois participants, retour en bateau compris.</p>
+            <p>Reportage vidéo inclus.</p>
+          </div>
+          <p>
+            Pour un autre parcours ou un besoin particulier, imaginons
+            ensemble une prestation sur mesure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- À propos -->
+    <section class="content-section" id="apropos">
+      <div class="container about">
+        <div>
+          <p class="section-label">04 — À propos</p>
+          <h2>Qui est ton <span class="marker">running-sherpa</span>&nbsp;?</h2>
+          <p style="margin-top: 20px;">
+            <span class="about-badge">Olivier · 3 000 km / an</span>
+          </p>
+        </div>
+
+        <div class="section-content">
+          <p>
+            Je m'appelle Olivier. Je suis passionné de course à pied :
+            l'année dernière, j'ai couru plus de 3 000 km. J'habite à
+            La Teste-de-Buch et je suis licencié au club FFA ALTEA.
+          </p>
+          <p>
+            J'adore écouter les histoires d'aventures sportives,
+            notamment lorsqu'on y parle d'endurance sur les longues
+            distances.
+          </p>
+          <p>
+            J'aime courir longtemps. Mais quand je pars courir une longue
+            distance seul, je me sens frustré d'avoir trop d'affaires sur
+            moi. Pour profiter pleinement d'une sortie, j'ai besoin de
+            courir léger.
+          </p>
+          <p>
+            Alors, je rêve d'avoir une équipe qui s'occupe de toute la
+            logistique pendant que je me concentre uniquement sur ma
+            foulée et mes sensations.
+          </p>
+          <p>
+            Ce rêve est le point de départ de Running Sherpa. Je veux te
+            faire vivre l'expérience d'une longue distance avec une
+            logistique <span class="highlight">digne d'un coureur d'élite</span>&nbsp;!
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pied de page -->
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Running Sherpa</span>
+      <span>Cours léger. Nous faisons le reste.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>
