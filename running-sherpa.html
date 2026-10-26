@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Running Sherpa : l'assistance logistique à vélo pour ton challenge privé de course à pied autour du Bassin d'Arcachon.">
+  <title>RUNNING SHERPA — Cours léger, vis loin</title>
+
+  <style>
+    :root {
+      --yellow: #ffd21e;
+      --black: #171717;
+      --gray: #666;
+      --light-gray: #e8e8e8;
+      --white: #fff;
+      --max-width: 960px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--white);
+      color: var(--black);
+      font-family: Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 850;
+      letter-spacing: -0.7px;
+      text-decoration: none;
+    }
+
+    .brand span {
+      background: var(--yellow);
+      padding: 2px 5px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      text-decoration: none;
+      color: var(--gray);
+    }
+
+    .hero {
+      padding: 88px 0 72px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 12px;
+      margin-bottom: 22px;
+      border-radius: 4px;
+      background: #fff4bd;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0 auto 20px;
+      font-size: clamp(38px, 7vw, 66px);
+      line-height: 1.06;
+      letter-spacing: -2.8px;
+      font-weight: 850;
+    }
+
+    .hero p {
+      max-width: 610px;
+      margin: 0 auto 30px;
+      color: var(--gray);
+      font-size: clamp(17px, 2.5vw, 21px);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 19px;
+      border: 1px solid var(--black);
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--yellow);
+      border-color: var(--yellow);
+    }
+
+    .button-secondary {
+      background: var(--white);
+    }
+
+    .video-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid var(--light-gray);
+      border-radius: 12px;
+      background: #f5f5f5;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    section {
+      padding: 64px 0;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .section-label {
+      margin: 0 0 12px;
+      color: var(--gray);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 22px;
+      font-size: clamp(27px, 4vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -1.2px;
+    }
+
+    .section-content {
+      max-width: 720px;
+      color: #424242;
+      font-size: 16px;
+    }
+
+    .section-content p {
+      margin: 0 0 16px;
+    }
+
+    .highlight {
+      background: linear-gradient(
+        transparent 60%,
+        var(--yellow) 60%
+      );
+      font-weight: 750;
+    }
+
+    .price {
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px solid var(--light-gray);
+      border-radius: 10px;
+      background: #fffdf4;
+    }
+
+    .price-amount {
+      margin-bottom: 6px;
+      font-size: clamp(36px, 6vw, 48px);
+      line-height: 1.2;
+      font-weight: 850;
+      letter-spacing: -1.5px;
+    }
+
+    .price p {
+      margin-bottom: 0;
+      color: var(--gray);
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 42px;
+      align-items: start;
+    }
+
+    .about-tag {
+      display: inline-block;
+      padding: 6px 10px;
+      background: var(--yellow);
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .final-cta {
+      padding: 64px 20px;
+      border-radius: 12px;
+      background: #f7f7f5;
+      text-align: center;
+    }
+
+    .final-cta h2 {
+      max-width: 600px;
+      margin: 0 auto 16px;
+    }
+
+    .final-cta p {
+      margin: 0 auto 25px;
+      color: var(--gray);
+    }
+
+    footer {
+      padding: 26px 0;
+      margin-top: 64px;
+      border-top: 1px solid var(--light-gray);
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(100% - 32px, var(--max-width));
+      }
+
+      .nav {
+        min-height: 66px;
+      }
+
+      .nav-link {
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 62px 0 48px;
+      }
+
+      h1 {
+        letter-spacing: -1.7px;
+      }
+
+      section {
+        padding: 48px 0;
+      }
+
+      .about {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#accueil">RUNNING <span>SHERPA</span></a>
+      <a class="nav-link" href="#concept">Découvrir le concept ↘</a>
+    </div>
+  </header>
+
+  <main id="accueil">
+    <div class="container">
+      <div class="hero">
+        <span class="eyebrow">Cours léger, vis loin</span>
+        <h1>La logistique de ton challenge privé de course à pied.</h1>
+        <p>
+          Tu te concentres sur ta course. Je m'occupe de l'assistance,
+          du ravitaillement et des souvenirs.
+        </p>
+
+        <div class="actions">
+          <a class="button button-primary" href="#contact">
+            Imaginons ensemble ton futur challenge
+          </a>
+          <a class="button button-secondary"
+             href="https://calendly.com/oliv-hqm/30min"
+             target="_blank" rel="noopener noreferrer">
+            Réserve une visio ici
+          </a>
+        </div>
+      </div>
+
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/MoMcG_gAZGc"
+          title="Présentation de Running Sherpa"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <section id="concept">
+      <div class="container">
+        <p class="section-label">01 — Le concept</p>
+        <h2>Tu cours. Je gère le reste.</h2>
+        <div class="section-content">
+          <p>
+            Le running-sherpa te laisse te concentrer sur ton challenge
+            privé de course à pied.
+          </p>
+          <p>
+            En assurant l'assistance à vélo, je porte toutes tes affaires :
+            vêtements de protection et de rechange, alimentation, boissons,
+            etc. J'organise autant de points de ravitaillement que tu le
+            souhaites.
+          </p>
+          <p>
+            Je capture également ta course à la GoPro et je te livre
+            <span class="highlight">un film souvenir</span>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="parcours">
+      <div class="container">
+        <p class="section-label">02 — Le parcours</p>
+        <h2>Le tour du Bassin d'Arcachon.</h2>
+        <div class="section-content">
+          <p>
+            D'Arcachon, jetée Thiers, au Cap Ferret, jetée Bélisaire :
+            un challenge de <span class="highlight">50 km</span> sur l'un
+            des plus beaux sites naturels du monde.
+          </p>
+          <p>
+            Retour à Arcachon par navette maritime.
+          </p>
+          <p>
+            Un autre parcours en tête ? Toute autre destination est
+            envisageable grâce à une prestation sur mesure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tarif">
+      <div class="container">
+        <p class="section-label">03 — Le tarif</p>
+        <h2>Une formule simple.</h2>
+        <div class="section-content">
+          <div class="price">
+            <div class="price-amount">200 €</div>
+            <p>Forfait jusqu'à trois participants, retour en bateau compris.</p>
+            <p>Reportage vidéo inclus.</p>
+          </div>
+          <p>
+            Pour un autre parcours ou un besoin particulier, imaginons
+            ensemble une prestation sur mesure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="apropos">
+      <div class="container about">
+        <div>
+          <p class="section-label">04 — À propos</p>
+          <h2>Qui est ton running-sherpa ?</h2>
+          <span class="about-tag">Olivier · Coureur de fond</span>
+        </div>
+
+        <div class="section-content">
+          <p>
+            Je m'appelle Olivier. Je suis passionné de course à pied :
+            l'année dernière, j'ai couru plus de 3 000 km. J'habite à
+            La Teste-de-Buch et je suis licencié au club FFA ALTEA.
+          </p>
+          <p>
+            J'adore écouter les histoires d'aventures sportives,
+            notamment lorsqu'on y parle d'endurance sur les longues
+            distances.
+          </p>
+          <p>
+            J'aime courir longtemps. Mais quand je pars courir une longue
+            distance seul, je me sens frustré d'avoir trop d'affaires sur
+            moi. Pour profiter pleinement d'une sortie, j'ai besoin de
+            courir léger.
+          </p>
+          <p>
+            Alors, je rêve d'avoir une équipe qui s'occupe de toute la
+            logistique pendant que je me concentre uniquement sur ma
+            foulée et mes sensations.
+          </p>
+          <p>
+            Ce rêve est le point de départ de Running Sherpa. Je veux te
+            faire vivre l'expérience d'une longue distance avec une
+            logistique digne d'une coureuse ou d'un coureur élite !
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="final-cta">
+          <p class="section-label">Ton prochain défi commence ici</p>
+          <h2>Et si tu courais enfin l'esprit léger ?</h2>
+          <p>Parlons de ton idée et construisons ton challenge ensemble.</p>
+          <a class="button button-primary"
+             href="https://calendly.com/oliv-hqm/30min"
+             target="_blank" rel="noopener noreferrer">
+            Réserve une visio de 30 minutes
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> RUNNING SHERPA</span>
+      <span>Le Bassin d'Arcachon · Cours léger, vis loin.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
+</body>
+</html>
