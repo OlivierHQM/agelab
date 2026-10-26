@@ -11,9 +11,9 @@
     :root {
       --yellow: #ffd21e;
       --black: #171717;
-      --gray: #666;
+      --gray: #666666;
       --light-gray: #e8e8e8;
-      --white: #fff;
+      --white: #ffffff;
       --max-width: 960px;
     }
 
@@ -23,6 +23,7 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 90px;
     }
 
     body {
@@ -44,8 +45,16 @@
       margin: 0 auto;
     }
 
+    /* Navigation fixe */
+
     header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.97);
       border-bottom: 1px solid var(--light-gray);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .nav {
@@ -61,6 +70,7 @@
       font-weight: 850;
       letter-spacing: -0.7px;
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .brand span {
@@ -70,8 +80,12 @@
 
     .nav-link {
       font-size: 14px;
-      text-decoration: none;
       color: var(--gray);
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      color: var(--black);
     }
 
     /* Accueil */
@@ -86,6 +100,8 @@
       padding: 90px 0 80px;
       overflow: hidden;
     }
+
+    /* Illustration décorative du Bassin, sans texte */
 
     .hero-map {
       position: absolute;
@@ -121,12 +137,22 @@
       text-transform: uppercase;
     }
 
-    h1 {
-      margin: 0 0 18px;
+    /* Titre principal reprenant le logo */
+
+    .hero-title {
+      margin: 0 0 22px;
       font-size: clamp(42px, 6vw, 68px);
-      line-height: 1.02;
+      line-height: 1.08;
       letter-spacing: -2.5px;
       font-weight: 850;
+    }
+
+    .hero-title span {
+      display: inline;
+      background: var(--yellow);
+      padding: 0 5px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
     }
 
     .hero-subtitle {
@@ -173,6 +199,8 @@
       color: var(--gray);
     }
 
+    /* Boutons */
+
     .button {
       display: inline-block;
       padding: 12px 19px;
@@ -192,6 +220,10 @@
     .button-primary {
       background: var(--yellow);
       border-color: var(--yellow);
+    }
+
+    .button-primary:hover {
+      background: #f0c400;
     }
 
     .button-secondary {
@@ -226,6 +258,7 @@
     section.content-section {
       padding: 64px 0;
       border-top: 1px solid var(--light-gray);
+      scroll-margin-top: 90px;
     }
 
     .content-section h2 {
@@ -310,11 +343,11 @@
       gap: 12px;
     }
 
-    /* Responsive */
+    /* Version mobile */
 
     @media (max-width: 760px) {
       .container {
-        width: min(100% - 32px, var(--max-width));
+        width: min(calc(100% - 32px), var(--max-width));
       }
 
       .nav {
@@ -339,7 +372,7 @@
         opacity: 0.16;
       }
 
-      h1 {
+      .hero-title {
         font-size: clamp(39px, 11vw, 58px);
         letter-spacing: -1.8px;
       }
@@ -365,26 +398,44 @@
         max-width: 100%;
       }
     }
+
+    @media (max-width: 380px) {
+      .brand {
+        font-size: 16px;
+      }
+
+      .nav-link {
+        font-size: 11px;
+      }
+
+      .hero-title {
+        font-size: 37px;
+      }
+    }
   </style>
 </head>
 
 <body>
   <header>
     <div class="container nav">
-      <a class="brand" href="#accueil">RUNNING <span>SHERPA</span></a>
+      <a class="brand" href="#accueil">
+        RUNNING <span>SHERPA</span>
+      </a>
       <a class="nav-link" href="#concept">Découvrir le concept ↘</a>
     </div>
   </header>
 
   <main id="accueil">
 
-    <!-- Accueil : titre, carte et réservation -->
+    <!-- Accueil -->
     <div class="container">
       <section class="hero">
 
+        <!-- Illustration décorative sans aucune annotation textuelle -->
         <div class="hero-map" aria-hidden="true">
           <svg viewBox="0 0 700 500"
                xmlns="http://www.w3.org/2000/svg">
+
             <g fill="none" stroke="#c9b66b" stroke-width="1.5">
               <path d="M80 30 C145 65 110 110 180 145 S245 225 195 270 S170 365 250 410"/>
               <path d="M110 15 C175 65 140 105 205 140 S275 220 220 275 S205 360 280 395"/>
@@ -417,8 +468,10 @@
               stroke="#c5a934"
               stroke-width="2"/>
 
-            <path d="M365 75 C390 110 370 140 395 170
-              S425 220 400 250 S430 305 400 335
+            <path d="M365 75
+              C390 110 370 140 395 170
+              S425 220 400 250
+              S430 305 400 335
               S420 385 400 420"
               fill="none"
               stroke="#c5a934"
@@ -428,21 +481,15 @@
             <circle cx="350" cy="85" r="6" fill="#171717"/>
             <circle cx="410" cy="405" r="6" fill="#171717"/>
 
-            <g fill="#171717"
-               font-family="Arial, sans-serif"
-               font-size="13">
-              <text x="365" y="82">Arcachon</text>
-              <text x="420" y="410">Cap Ferret</text>
-              <text x="50" y="455"
-                    font-size="11"
-                    letter-spacing="2">BASSIN D'ARCACHON</text>
-            </g>
           </svg>
         </div>
 
         <div class="hero-copy">
           <span class="eyebrow">Cours léger, vis loin</span>
-          <h1>RUNNING SHERPA</h1>
+
+          <h1 class="hero-title">
+            RUNNING <span>SHERPA</span>
+          </h1>
 
           <p class="hero-subtitle">
             La logistique de ton challenge privé de course à pied
@@ -503,12 +550,14 @@
             Le running-sherpa te laisse te concentrer sur ton challenge
             privé de course à pied.
           </p>
+
           <p>
             En assurant l'assistance à vélo, je porte toutes tes affaires :
             vêtements de protection et de rechange, alimentation, boissons,
             etc. J'organise autant de points de ravitaillement que tu le
             souhaites.
           </p>
+
           <p>
             Je capture également ta course à la GoPro et je te livre
             <span class="highlight">un film souvenir</span>.
@@ -529,9 +578,9 @@
             un challenge de <span class="highlight">50 km</span> sur l'un
             des plus beaux sites naturels du monde.
           </p>
-          <p>
-            Retour à Arcachon par navette maritime.
-          </p>
+
+          <p>Retour à Arcachon par navette maritime.</p>
+
           <p>
             Un autre parcours en tête ? Toute autre destination est
             envisageable grâce à une prestation sur mesure.
@@ -549,7 +598,9 @@
         <div class="section-content">
           <div class="price">
             <div class="price-amount">200 €</div>
-            <p>Forfait jusqu'à trois participants, retour en bateau compris.</p>
+            <p>
+              Forfait jusqu'à trois participants, retour en bateau compris.
+            </p>
             <p>Reportage vidéo inclus.</p>
           </div>
 
@@ -607,7 +658,6 @@
 
   </main>
 
-  <!-- Pied de page -->
   <footer>
     <div class="container footer-inner">
       <span>© <span id="year"></span> RUNNING SHERPA</span>
