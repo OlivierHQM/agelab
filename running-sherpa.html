@@ -4,12 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Running Sherpa : assistance logistique pour ton challenge privé de course à pied ">
-  <title>RUNNING SHERPA</title>
+  <meta name="description" content="Running Sherpa : assistance logistique à vélo pour ton challenge privé de course à pied autour du Bassin d'Arcachon.">
+  <meta name="theme-color" content="#ffffff">
+  <title>RUNNING SHERPA — Cours léger, vis loin</title>
 
   <style>
     :root {
-      --yellow: #ffd21e;
+      --orange: #ff873d;
+      --turquoise: #39c8bd;
+      --gradient: linear-gradient(110deg, #ff873d 0%, #39c8bd 100%);
       --black: #171717;
       --gray: #666666;
       --light-gray: #e8e8e8;
@@ -23,17 +26,36 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 90px;
+      scroll-padding-top: 100px;
     }
 
     body {
+      position: relative;
+      isolation: isolate;
       margin: 0;
-      background: var(--white);
+      background: #ffffff;
       color: var(--black);
       font-family: Inter, -apple-system, BlinkMacSystemFont,
         "Segoe UI", sans-serif;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fond topographique sur toute la page */
+
+    .topographic-background {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+      background: #ffffff;
+    }
+
+    .topographic-background svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     a {
@@ -45,16 +67,16 @@
       margin: 0 auto;
     }
 
-    /* Navigation fixe */
+    /* Barre supérieure fixe */
 
     header {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.97);
-      border-bottom: 1px solid var(--light-gray);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid rgba(23, 23, 23, 0.09);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .nav {
@@ -74,8 +96,11 @@
     }
 
     .brand span {
-      background: var(--yellow);
+      color: #171717;
+      background: var(--gradient);
       padding: 2px 5px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
     }
 
     .nav-link {
@@ -88,40 +113,19 @@
       color: var(--black);
     }
 
-    /* Accueil */
+    /* Accueil : aucun dessin derrière le titre */
 
     .hero {
-      position: relative;
-      isolation: isolate;
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
       align-items: center;
       gap: 48px;
       padding: 90px 0 80px;
-      overflow: hidden;
-    }
-
-    /* Illustration décorative du Bassin, sans texte */
-
-    .hero-map {
-      position: absolute;
-      z-index: -1;
-      width: min(75%, 700px);
-      right: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      opacity: 0.25;
-      pointer-events: none;
-    }
-
-    .hero-map svg {
-      display: block;
-      width: 100%;
-      height: auto;
     }
 
     .hero-copy,
     .hero-booking {
+      min-width: 0;
       position: relative;
     }
 
@@ -130,14 +134,18 @@
       padding: 5px 12px;
       margin-bottom: 22px;
       border-radius: 4px;
-      background: #fff4bd;
+      background: linear-gradient(
+        110deg,
+        rgba(255, 135, 61, 0.15),
+        rgba(57, 200, 189, 0.17)
+      );
       font-size: 12px;
       font-weight: 750;
       letter-spacing: 0.7px;
       text-transform: uppercase;
     }
 
-    /* Titre principal reprenant le logo */
+    /* H1 assorti au logo */
 
     .hero-title {
       margin: 0 0 22px;
@@ -149,7 +157,8 @@
 
     .hero-title span {
       display: inline;
-      background: var(--yellow);
+      color: var(--black);
+      background: var(--gradient);
       padding: 0 5px;
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
@@ -167,7 +176,7 @@
     .hero-description {
       max-width: 470px;
       margin: 0 0 26px;
-      color: var(--gray);
+      color: #555555;
       font-size: 16px;
     }
 
@@ -182,9 +191,11 @@
 
     .hero-booking {
       padding: 30px;
-      border: 1px solid var(--light-gray);
+      border: 1px solid rgba(23, 23, 23, 0.12);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.94);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
     }
 
     .hero-booking h2 {
@@ -204,30 +215,28 @@
     .button {
       display: inline-block;
       padding: 12px 19px;
-      border: 1px solid var(--black);
+      border: 1px solid rgba(23, 23, 23, 0.14);
       border-radius: 7px;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 750;
       text-align: center;
       text-decoration: none;
-      transition: transform 0.15s, background 0.15s;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     .button:hover {
       transform: translateY(-2px);
+      box-shadow: 0 5px 18px rgba(23, 23, 23, 0.10);
     }
 
     .button-primary {
-      background: var(--yellow);
-      border-color: var(--yellow);
-    }
-
-    .button-primary:hover {
-      background: #f0c400;
+      color: #171717;
+      border-color: transparent;
+      background: var(--gradient);
     }
 
     .button-secondary {
-      background: var(--white);
+      background: rgba(255, 255, 255, 0.92);
     }
 
     /* Vidéo */
@@ -240,7 +249,7 @@
       max-width: 820px;
       margin: 0 auto;
       overflow: hidden;
-      border: 1px solid var(--light-gray);
+      border: 1px solid rgba(23, 23, 23, 0.12);
       border-radius: 12px;
       background: #f5f5f5;
       aspect-ratio: 16 / 9;
@@ -257,7 +266,7 @@
 
     section.content-section {
       padding: 64px 0;
-      border-top: 1px solid var(--light-gray);
+      border-top: 1px solid rgba(23, 23, 23, 0.10);
       scroll-margin-top: 90px;
     }
 
@@ -278,11 +287,17 @@
       margin: 0 0 16px;
     }
 
+    /* Accent orange-turquoise sur les expressions importantes */
+
     .highlight {
-      background: linear-gradient(
-        transparent 60%,
-        var(--yellow) 60%
+      background-image: linear-gradient(
+        110deg,
+        rgba(255, 135, 61, 0.45),
+        rgba(57, 200, 189, 0.45)
       );
+      background-repeat: no-repeat;
+      background-position: 0 85%;
+      background-size: 100% 34%;
       font-weight: 750;
     }
 
@@ -291,17 +306,22 @@
     .price {
       margin: 24px 0;
       padding: 24px;
-      border: 1px solid var(--light-gray);
+      border: 1px solid rgba(23, 23, 23, 0.12);
       border-radius: 10px;
-      background: #fffdf4;
+      background: rgba(255, 255, 255, 0.84);
     }
 
     .price-amount {
-      margin-bottom: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
       font-size: clamp(36px, 6vw, 48px);
       line-height: 1.2;
       font-weight: 850;
       letter-spacing: -1.5px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .price p {
@@ -321,8 +341,12 @@
     .about-tag {
       display: inline-block;
       padding: 6px 10px;
-      background: var(--yellow);
       border-radius: 4px;
+      background: linear-gradient(
+        110deg,
+        rgba(255, 135, 61, 0.22),
+        rgba(57, 200, 189, 0.24)
+      );
       font-size: 12px;
       font-weight: 750;
     }
@@ -331,9 +355,10 @@
 
     footer {
       padding: 26px 0;
-      border-top: 1px solid var(--light-gray);
+      border-top: 1px solid rgba(23, 23, 23, 0.10);
       color: var(--gray);
       font-size: 13px;
+      background: rgba(255, 255, 255, 0.72);
     }
 
     .footer-inner {
@@ -343,7 +368,14 @@
       gap: 12px;
     }
 
-    /* Version mobile */
+    /* Accessibilité */
+
+    a:focus-visible {
+      outline: 3px solid var(--turquoise);
+      outline-offset: 4px;
+    }
+
+    /* Adaptation aux écrans mobiles */
 
     @media (max-width: 760px) {
       .container {
@@ -362,14 +394,6 @@
         grid-template-columns: 1fr;
         gap: 32px;
         padding: 60px 0;
-      }
-
-      .hero-map {
-        width: 110%;
-        max-width: 600px;
-        right: -15%;
-        top: 28%;
-        opacity: 0.16;
       }
 
       .hero-title {
@@ -397,6 +421,12 @@
       .button {
         max-width: 100%;
       }
+
+      .topographic-background svg {
+        width: 180%;
+        max-width: none;
+        margin-left: -40%;
+      }
     }
 
     @media (max-width: 380px) {
@@ -412,15 +442,166 @@
         font-size: 37px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .button {
+        transition: none;
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- Fond topographique décoratif sur toute la page -->
+  <div class="topographic-background" aria-hidden="true">
+    <svg
+      viewBox="0 0 1600 1200"
+      preserveAspectRatio="xMidYMin slice"
+      xmlns="http://www.w3.org/2000/svg">
+
+      <defs>
+        <linearGradient id="topoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff873d"/>
+          <stop offset="100%" stop-color="#39c8bd"/>
+        </linearGradient>
+
+        <pattern id="topographicLines"
+                 width="650"
+                 height="520"
+                 patternUnits="userSpaceOnUse">
+          <g fill="none"
+             stroke="url(#topoGradient)"
+             stroke-width="1.15"
+             opacity="0.48">
+
+            <path d="M-100 115
+              C20 20 110 40 170 100
+              S270 190 350 125
+              S480 20 590 80
+              S700 180 760 100"/>
+
+            <path d="M-100 140
+              C20 45 110 65 170 125
+              S270 215 350 150
+              S480 45 590 105
+              S700 205 760 125"/>
+
+            <path d="M-100 165
+              C20 70 110 90 170 150
+              S270 240 350 175
+              S480 70 590 130
+              S700 230 760 150"/>
+
+            <path d="M-100 190
+              C20 95 110 115 170 175
+              S270 265 350 200
+              S480 95 590 155
+              S700 255 760 175"/>
+
+            <path d="M60 540
+              C10 460 60 385 145 365
+              S270 390 290 320
+              S255 220 320 190
+              S440 225 460 300
+              S420 420 490 450
+              S600 420 700 490"/>
+
+            <path d="M85 540
+              C35 460 85 405 155 390
+              S250 405 265 330
+              S240 245 325 215
+              S415 245 435 310
+              S405 400 485 425
+              S610 400 700 465"/>
+
+            <path d="M110 540
+              C60 460 110 425 165 415
+              S230 420 240 340
+              S225 270 330 240
+              S390 265 410 320
+              S390 380 480 400
+              S620 380 700 440"/>
+
+            <path d="M-80 370
+              C20 320 110 340 150 405
+              S205 500 290 465
+              S405 365 480 390
+              S570 500 700 460"/>
+
+            <path d="M-80 395
+              C20 345 110 365 150 430
+              S205 525 290 490
+              S405 390 480 415
+              S570 525 700 485"/>
+
+            <path d="M-80 420
+              C20 370 110 390 150 455
+              S205 550 290 515
+              S405 415 480 440
+              S570 550 700 510"/>
+          </g>
+        </pattern>
+      </defs>
+
+      <rect width="1600" height="1200" fill="url(#topographicLines)"/>
+
+      <g fill="none"
+         stroke="url(#topoGradient)"
+         stroke-width="1.4"
+         opacity="0.24">
+
+        <path d="M-100 100
+          C150 -40 350 40 410 180
+          S520 400 720 300
+          S990 40 1170 130
+          S1390 340 1700 100"/>
+
+        <path d="M-100 125
+          C150 -15 350 65 410 205
+          S520 425 720 325
+          S990 65 1170 155
+          S1390 365 1700 125"/>
+
+        <path d="M-100 150
+          C150 10 350 90 410 230
+          S520 450 720 350
+          S990 90 1170 180
+          S1390 390 1700 150"/>
+
+        <path d="M100 1300
+          C-20 1050 140 850 360 900
+          S650 1100 790 950
+          S850 700 1040 680
+          S1320 820 1450 650
+          S1500 400 1700 300"/>
+
+        <path d="M130 1300
+          C10 1050 170 880 390 930
+          S680 1130 820 980
+          S880 730 1070 710
+          S1350 850 1480 680
+          S1530 430 1730 330"/>
+
+        <path d="M160 1300
+          C40 1050 200 910 420 960
+          S710 1160 850 1010
+          S910 760 1100 740
+          S1380 880 1510 710
+          S1560 460 1760 360"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Barre de navigation fixe -->
   <header>
     <div class="container nav">
       <a class="brand" href="#accueil">
         RUNNING <span>SHERPA</span>
-      </a>
 
     </div>
   </header>
@@ -431,61 +612,8 @@
     <div class="container">
       <section class="hero">
 
-        <!-- Illustration décorative sans aucune annotation textuelle -->
-        <div class="hero-map" aria-hidden="true">
-          <svg viewBox="0 0 700 500"
-               xmlns="http://www.w3.org/2000/svg">
-
-            <g fill="none" stroke="#c9b66b" stroke-width="1.5">
-              <path d="M80 30 C145 65 110 110 180 145 S245 225 195 270 S170 365 250 410"/>
-              <path d="M110 15 C175 65 140 105 205 140 S275 220 220 275 S205 360 280 395"/>
-              <path d="M150 15 C205 75 180 105 245 155 S300 225 260 280 S240 345 315 390"/>
-              <path d="M240 30 C280 80 260 130 320 165 S360 235 320 280 S315 345 365 390"/>
-              <path d="M310 20 C350 80 330 120 380 160 S425 230 390 285 S385 350 435 395"/>
-              <path d="M390 35 C430 80 410 120 460 155 S500 225 465 275 S460 340 515 385"/>
-              <path d="M470 20 C510 70 490 120 540 160 S575 225 540 280 S540 350 595 395"/>
-              <path d="M40 120 C140 100 210 125 270 170 S410 205 510 165 S610 150 670 180"/>
-              <path d="M30 190 C140 165 220 190 280 230 S420 265 520 225 S620 220 680 245"/>
-              <path d="M45 265 C145 240 225 265 290 305 S420 340 520 300 S620 295 665 325"/>
-              <path d="M60 340 C155 315 235 340 300 380 S435 410 530 375 S615 370 655 400"/>
-            </g>
-
-            <path d="M345 45
-              C315 80 330 115 355 135
-              C380 155 370 180 345 198
-              C320 218 330 245 360 260
-              C390 280 385 310 360 330
-              C340 350 355 380 380 395
-              C410 415 400 440 380 455
-              C435 440 465 410 450 380
-              C435 350 455 325 475 300
-              C500 270 485 240 460 220
-              C435 200 445 170 465 145
-              C485 115 465 85 440 70
-              C410 50 375 45 345 45 Z"
-              fill="#f4df7c"
-              fill-opacity="0.55"
-              stroke="#c5a934"
-              stroke-width="2"/>
-
-            <path d="M365 75
-              C390 110 370 140 395 170
-              S425 220 400 250
-              S430 305 400 335
-              S420 385 400 420"
-              fill="none"
-              stroke="#c5a934"
-              stroke-width="2"
-              stroke-dasharray="5 7"/>
-
-            <circle cx="350" cy="85" r="6" fill="#171717"/>
-            <circle cx="410" cy="405" r="6" fill="#171717"/>
-
-          </svg>
-        </div>
-
         <div class="hero-copy">
-
+          <span class="eyebrow">Cours léger, vis loin</span>
 
           <h1 class="hero-title">
             RUNNING <span>SHERPA</span>
@@ -495,17 +623,20 @@
             La logistique de ton challenge privé de course à pied
           </p>
 
+          <p class="hero-description">
+            Tu te concentres sur ta course. Je m'occupe de l'assistance,
+            du ravitaillement et des souvenirs.
+          </p>
 
+       
         </div>
 
         <aside class="hero-booking">
-          <p class="section-label"></p>
+          <p class="section-label">Ton prochain défi commence ici</p>
 
           <h3>Construisons ton challenge privé ensemble</h3>
 
-          <p>
-     
-          </p>
+    
 
           <a class="button button-primary"
              href="https://calendly.com/oliv-hqm/30min"
@@ -552,8 +683,8 @@
           </p>
 
           <p>
-            Je capture également ta course à la GoPro et je te livre un film souvenir.
-
+            Je capture également ta course à la GoPro et je te livre
+            un film souvenir
           </p>
         </div>
       </div>
@@ -635,7 +766,7 @@
           </p>
 
           <p>
-            Alors, j'ai souvent rêvé d'avoir une équipe qui s'occupe de toute la
+            Alors, je rêve d'avoir une équipe qui s'occupe de toute la
             logistique pendant que je me concentre uniquement sur ma
             foulée et mes sensations.
           </p>
@@ -651,6 +782,7 @@
 
   </main>
 
+  <!-- Pied de page -->
   <footer>
     <div class="container footer-inner">
       <span>© <span id="year"></span> RUNNING SHERPA</span>
@@ -662,5 +794,6 @@
     document.getElementById("year").textContent =
       new Date().getFullYear();
   </script>
+
 </body>
 </html>
