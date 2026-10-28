@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Running Sherpa : assistance logistique pour challenge privé de course à pied longue distance">
+  <meta name="theme-color" content="#efe9dd">
+  <title>RUNNING SHERPA</title>
+
+  <style>
+    :root {
+      --beige: #efe9dd;
+      --ink: #1a1815;
+      --gray: #6f6a5f;
+      --serif: "Times New Roman", Georgia, "Liberation Serif", serif;
+      --sans: "Helvetica Neue", Arial, Inter, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--beige);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: min(calc(100% - 48px), 860px);
+      margin: 0 auto;
+    }
+
+    /* ---------- Header ---------- */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--beige);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .nav {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav a.booking {
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 2px;
+    }
+
+    .nav a.booking:hover { border-bottom-width: 3px; }
+
+    /* ---------- Hero : image derrière le titre ---------- */
+
+    .hero {
+      position: relative;
+      padding: 90px 0 110px;
+      overflow: hidden;
+    }
+
+    /* Arrière-plan : illustration du Bassin d'Arcachon.
+       Pour utiliser votre propre image, remplacez l'élément <svg id="hero-art">
+       ci-dessous par :
+       <img id="hero-art" src="votre-image.png" alt=""> */
+
+    .hero-art {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-art svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(44px, 7.5vw, 88px);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-shadow: 0 1px 0 rgba(239, 233, 221, 0.6);
+    }
+
+    h1 em { font-style: italic; }
+
+    h3 {
+      margin: 0;
+      max-width: 560px;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(18px, 2.4vw, 24px);
+      line-height: 1.45;
+      color: var(--ink);
+      text-shadow: 0 1px 0 rgba(239, 233, 221, 0.6);
+    }
+
+    /* ---------- Vidéo ---------- */
+
+    .video-section {
+      padding: 26px 0 70px;
+    }
+
+    .video-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid var(--ink);
+      background: #e7e0d0;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-wrap iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* ---------- Bloc de texte unique ---------- */
+
+    .text-block {
+      padding: 20px 0 90px;
+    }
+
+    .text-block p {
+      margin: 0 0 26px;
+      color: #2e2b24;
+    }
+
+    .text-block .lead-in {
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    /* ---------- Footer ---------- */
+
+    footer {
+      padding: 26px 0 36px;
+      border-top: 1px solid var(--ink);
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    /* ---------- Mobile ---------- */
+
+    @media (max-width: 760px) {
+      .container { width: min(calc(100% - 32px), 860px); }
+      .hero { padding: 56px 0 80px; }
+      .video-section { padding: 18px 0 54px; }
+      .text-block { padding: 10px 0 64px; }
+      body { font-size: 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#accueil">Running Sherpa</a>
+      <a class="booking"
+         href="https://calendly.com/oliv-hqm/30min"
+         target="_blank" rel="noopener noreferrer">
+        Réserver une visio
+      </a>
+    </div>
+  </header>
+
+  <main id="accueil">
+
+    <!-- Titre et sous-titre sur l'illustration du Bassin d'Arcachon -->
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true">
+        <!-- Image originale hébergée sur GitHub ; le SVG dessous sert de secours -->
+        <img src="https://raw.githubusercontent.com/OlivierHQM/agelab/main/documents/Screenshot%202026-10-28%20at%2012.01.52.png"
+             alt=""
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;"
+             onerror="this.remove()">
+        <!-- Illustration SVG de secours, recréant la scène du Bassin d'Arcachon -->
+        <svg viewBox="0 0 1600 560" preserveAspectRatio="xMidYMid slice"
+             xmlns="http://www.w3.org/2000/svg">
+          <!-- ciel bleu clair (40 % haut) -->
+          <rect width="1600" height="560" fill="#87CEEB"/>
+          <!-- nuages volumineux -->
+          <g fill="#ffffff">
+            <ellipse cx="200" cy="80" rx="150" ry="44"/>
+            <ellipse cx="310" cy="60" rx="100" ry="34"/>
+            <ellipse cx="105" cy="104" rx="90" ry="28"/>
+            <ellipse cx="1120" cy="64" rx="170" ry="48"/>
+            <ellipse cx="1260" cy="88" rx="110" ry="34"/>
+            <ellipse cx="990" cy="100" rx="90" ry="26"/>
+            <ellipse cx="690" cy="110" rx="110" ry="30"/>
+          </g>
+          <!-- collines vertes sur le tiers droit -->
+          <path d="M1000 240 C1150 205 1350 195 1620 250 L1620 560 L1000 560 Z"
+                fill="#81C784"/>
+          <path d="M1060 300 C1220 262 1420 268 1620 320 L1620 560 L1060 560 Z"
+                fill="#2E7D32"/>
+          <!-- maisons blanches aux toits rouge-orangé -->
+          <g>
+            <rect x="1150" y="292" width="48" height="32" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M1142 292 L1174 266 L1206 292 Z" fill="#E57373" stroke="#424242" stroke-width="2"/>
+            <rect x="1230" y="300" width="40" height="28" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M1223 300 L1250 277 L1277 300 Z" fill="#E57373" stroke="#424242" stroke-width="2"/>
+            <rect x="1340" y="322" width="44" height="30" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M1333 322 L1362 298 L1391 322 Z" fill="#E57373" stroke="#424242" stroke-width="2"/>
+          </g>
+          <!-- pins sur la colline -->
+          <g fill="#1B5E20">
+            <ellipse cx="1100" cy="332" rx="15" ry="40"/>
+            <rect x="1096" y="366" width="7" height="24" fill="#5D4037"/>
+            <ellipse cx="1470" cy="348" rx="14" ry="36"/>
+            <rect x="1466" y="378" width="7" height="22" fill="#5D4037"/>
+          </g>
+          <!-- mer turquoise pâle (50 % bas) -->
+          <path d="M-20 225 C300 215 700 220 1000 226 L1000 560 L-20 560 Z"
+                fill="#E0F7FA"/>
+          <path d="M-20 300 C350 288 700 295 1010 302 L1010 560 L-20 560 Z"
+                fill="#B2EBF2"/>
+          <path d="M-20 390 C350 378 700 385 1010 392 L1010 560 L-20 560 Z"
+                fill="#80DEEA"/>
+          <path d="M-20 470 C350 460 700 466 1010 472 L1010 560 L-20 560 Z"
+                fill="#4DD0E1"/>
+          <!-- vagues douces -->
+          <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.65" fill="none">
+            <path d="M140 340 C170 332 200 340 230 332"/>
+            <path d="M420 430 C450 422 480 430 510 422"/>
+            <path d="M180 500 C210 492 240 500 270 492"/>
+            <path d="M620 380 C650 372 680 380 710 372"/>
+            <path d="M540 510 C570 502 600 510 630 502"/>
+            <path d="M820 450 C850 442 880 450 910 442"/>
+          </g>
+          <!-- quatre voiliers -->
+          <g>
+            <path d="M300 356 L300 318 L330 356 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M294 356 L294 324 L268 356 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M262 356 L340 356" stroke="#424242" stroke-width="4" stroke-linecap="round"/>
+            <path d="M300 356 C288 366 312 366 300 376 C290 385 314 385 304 392"
+                  fill="none" stroke="#424242" stroke-width="3" stroke-linecap="round"/>
+            <path d="M620 396 L620 352 L656 396 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M612 396 L612 360 L582 396 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M576 396 L664 396" stroke="#424242" stroke-width="4" stroke-linecap="round"/>
+            <path d="M620 396 C606 408 634 408 620 420 C608 431 636 431 624 440"
+                  fill="none" stroke="#424242" stroke-width="3" stroke-linecap="round"/>
+            <path d="M880 440 L880 404 L908 440 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M874 440 L874 410 L852 440 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M846 440 L916 440" stroke="#424242" stroke-width="4" stroke-linecap="round"/>
+            <path d="M880 440 C870 450 892 450 880 460 C872 468 892 468 884 474"
+                  fill="none" stroke="#424242" stroke-width="3" stroke-linecap="round"/>
+            <path d="M420 486 L420 458 L444 486 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M415 486 L415 462 L396 486 Z" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+            <path d="M390 486 L452 486" stroke="#424242" stroke-width="4" stroke-linecap="round"/>
+            <path d="M420 486 C410 494 430 494 420 502"
+                  fill="none" stroke="#424242" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <!-- bande de plage étroite en bas à droite, bordée de végétation -->
+          <path d="M1010 512 C1160 505 1350 512 1620 505 L1620 560 L1010 560 Z"
+                fill="#F5F5DC"/>
+          <path d="M1010 512 C1150 498 1400 503 1620 494 L1620 512 C1360 522 1150 518 1010 522 Z"
+                fill="#2E7D32"/>
+        </svg>
+      </div>
+
+      <div class="container hero-copy">
+        <h1>Cours ton défi.<br><em>Je gère le reste.</em></h1>
+        <h3>Une logistique sur mesure au service de ton défi privé de course à pied longue distance.</h3>
+      </div>
+    </section>
+
+    <!-- Vidéo -->
+    <div class="container video-section">
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/MoMcG_gAZGc"
+          title="Présentation de Running Sherpa"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Bloc de texte unique -->
+    <div class="container text-block">
+
+      <p>
+        <span class="lead-in">Le concept.</span>
+        Le running-sherpa te laisse te concentrer sur ton challenge privé
+        de course à pied. Assurant l'assistance à vélo, il porte toutes tes
+        affaires (vêtements de protection et de rechange, alimentation,
+        boisson, etc.) et organise autant de points de ravitaillement que
+        tu le souhaites. Et il capture toute ta course à la GoPro et te
+        livre un film souvenir.
+      </p>
+
+      <p>
+        <span class="lead-in">Le parcours.</span>
+        Le tour du Bassin. Arcachon, jetée Thiers → Le Cap Ferret,
+        jetée Bélisaire. Un challenge de 50 km sur l'un des plus beaux
+        sites naturels du monde. Retour à Arcachon par navette maritime.
+        Toute autre parcours est envisageable en créant une prestation
+        sur-mesure.
+      </p>
+
+      <p>
+        <span class="lead-in">Le tarif.</span>
+        200 € forfait jusqu'à deux participants (retour en bateau compris).
+        Reportage vidéo inclus.
+      </p>
+
+      <p>
+        <span class="lead-in">Qui est ton running-sherpa&nbsp;?</span>
+        Je m'appelle Olivier, je suis passionné de course à pied,
+        l'année dernière j'ai couru plus de 3 000 km. J'habite à
+        La Teste-de-Buch et je suis licencié au club FFA ALTEA.
+      </p>
+
+      <p>
+        J'adore écouter les histoires d'aventures sportives, notamment
+        lorsqu'on y parle d'endurance sur les longues distances. J'aime
+        courir longtemps, mais quand je pars pour courir une longue
+        distance seul, je me sens frustré d'avoir trop d'affaires sur moi,
+        pour profiter à fond d'une sortie j'ai besoin de courir léger.
+        Alors, je rêve d'avoir une équipe qui s'occupe de toute la
+        logistique et moi je me concentre uniquement sur ma foulée et mes
+        sensations. Ce rêve, c'est le point de départ de Running Sherpa.
+        Je veux te faire vivre l'expérience d'une longue distance avec une
+        logistique de coureuse ou coureur élite&nbsp;!
+      </p>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      Running Sherpa · Une logistique sur mesure au service de ton défi
+      privé de course à pied longue distance.
+    </div>
+  </footer>
+
+</body>
+</html>
